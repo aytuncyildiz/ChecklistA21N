@@ -3,15 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>A321 NEO Checklist • Turkish Airlines EFB</title>
-  <meta name="theme-color" content="#0B0F17">
+  <title>Airbus A321 NEO Checklist • Turkish Airlines EFB</title>
+  <meta name="theme-color" content="#0B1320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Inter, JetBrains Mono, Space Grotesk -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
@@ -25,15 +27,15 @@
               red: '#C8102E',
               crimson: '#A60D26',
               darkRed: '#7A0518',
-              nightBg: '#090D14',
-              nightCard: '#111726',
+              nightBg: '#080D1A',
+              nightCard: '#0F172A',
               nightBorder: '#1E293B',
               ecamGreen: '#00E676',
               ecamCyan: '#00E5FF',
               ecamAmber: '#FFB300',
               ecamMagenta: '#E040FB',
               ecamBlue: '#2979FF',
-              dayBg: '#F8FAFC',
+              dayBg: '#F1F5F9',
               dayCard: '#FFFFFF',
               dayBorder: '#E2E8F0'
             }
@@ -44,9 +46,10 @@
             mono: ['JetBrains Mono', 'monospace']
           },
           boxShadow: {
-            'glow-red': '0 0 25px rgba(200, 16, 46, 0.4)',
+            'glow-red': '0 0 25px rgba(200, 16, 46, 0.45)',
             'glow-green': '0 0 25px rgba(0, 230, 118, 0.4)',
-            'glow-amber': '0 0 25px rgba(255, 179, 0, 0.35)'
+            'glow-cyan': '0 0 20px rgba(0, 229, 255, 0.35)',
+            'glow-amber': '0 0 20px rgba(255, 179, 0, 0.35)'
           }
         }
       }
@@ -54,41 +57,47 @@
   </script>
 
   <style>
-    /* Safe Area Insets for iOS Home Indicator & Notch */
     body {
       padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
       padding-left: env(safe-area-inset-left);
       padding-right: env(safe-area-inset-right);
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    /* Avionics Frosted Glass */
+    .efb-glass {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
 
     /* Scrollbars */
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     .dark ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 9999px; }
     .dark ::-webkit-scrollbar-thumb:hover { background: #334155; }
     ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
 
-    /* Frosted Glass Avionics Glass */
-    .efb-glass {
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-
-    /* Pulse Glow on Current Active Checklist Item */
-    @keyframes ecamPulse {
-      0%, 100% { border-color: rgba(0, 230, 118, 0.85); box-shadow: 0 0 16px rgba(0, 230, 118, 0.28); }
-      50% { border-color: rgba(0, 230, 118, 0.35); box-shadow: 0 0 4px rgba(0, 230, 118, 0.1); }
+    /* Active Item Airbus Indicator Glow Animation */
+    @keyframes ecamPulseHighlight {
+      0%, 100% {
+        border-color: rgba(0, 230, 118, 0.9);
+        box-shadow: 0 0 16px rgba(0, 230, 118, 0.3);
+      }
+      50% {
+        border-color: rgba(0, 230, 118, 0.35);
+        box-shadow: 0 0 6px rgba(0, 230, 118, 0.1);
+      }
     }
     .active-item-glow {
-      animation: ecamPulse 2s infinite ease-in-out;
+      animation: ecamPulseHighlight 2.2s infinite ease-in-out;
     }
 
-    /* Below the line amber caution barrier */
+    /* Caution Stripe Pattern for Below The Line */
     .below-line-barrier {
       background: repeating-linear-gradient(
-        45deg,
+        -45deg,
         rgba(255, 179, 0, 0.12),
         rgba(255, 179, 0, 0.12) 12px,
         rgba(255, 179, 0, 0.04) 12px,
@@ -101,13 +110,13 @@
 
   <!-- TOP HEADER / EFB AVIONICS BAR -->
   <header class="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-thy-nightBorder bg-white/95 dark:bg-thy-nightBg/95 efb-glass shadow-sm transition-colors duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-3">
       
       <!-- Brand & Aircraft Info -->
       <div class="flex items-center gap-3">
-        <!-- Turkish Airlines Official Wild Goose Emblem -->
-        <div class="w-10 h-10 rounded-full bg-thy-red flex items-center justify-center shadow-lg shadow-red-700/30 shrink-0">
-          <svg class="w-6 h-6 text-white" viewBox="0 0 100 100" fill="currentColor">
+        <!-- Turkish Airlines Official Wild Goose Roundel -->
+        <div class="w-11 h-11 rounded-full bg-thy-red flex items-center justify-center shadow-lg shadow-red-700/35 shrink-0 border-2 border-white/20">
+          <svg class="w-7 h-7 text-white" viewBox="0 0 100 100" fill="currentColor">
             <circle cx="50" cy="50" r="48" fill="#C8102E" />
             <path d="M78 28 C64 34, 46 44, 30 52 C22 56, 17 61, 24 64 C32 67, 44 63, 58 56 C52 64, 42 74, 33 80 C27 84, 25 87, 32 87 C44 87, 60 74, 72 61 C82 50, 89 36, 88 30 C87 26, 83 26, 78 28 Z" fill="#FFFFFF"/>
             <path d="M49 46 C59 38, 70 31, 79 26 C82 25, 84 27, 82 30 C76 39, 68 49, 58 58 C50 54, 47 48, 49 46 Z" fill="#FFFFFF"/>
@@ -120,29 +129,29 @@
               TURKISH AIRLINES
             </h1>
             <span class="text-[10px] font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-red-100 dark:bg-red-950/80 text-thy-red border border-red-200 dark:border-red-900">
-              A321-271NX
+              A321neo FLEET
             </span>
           </div>
-          <p class="text-[11px] font-mono text-slate-500 dark:text-slate-400">FLIGHT CREW OPERATING MANUAL • EFB CHECKLIST</p>
+          <p class="text-[11px] font-mono text-slate-500 dark:text-slate-400">FLIGHT CREW OPERATING MANUAL • SOP EFB CHECKLIST</p>
         </div>
       </div>
 
-      <!-- Quick Action Controls -->
+      <!-- Cockpit Quick Actions -->
       <div class="flex items-center gap-2 sm:gap-3">
-        <!-- Chime Sound Toggle -->
-        <button id="btn-audio-toggle" title="Kokpit Ses İkazı (Aç/Kapat)" class="px-2.5 py-2 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-slate-300 hover:border-thy-red transition flex items-center gap-2 text-xs font-mono">
+        <!-- Chime Audio Toggle -->
+        <button id="btn-audio-toggle" title="Kokpit Ses İkazı (Aç/Kapat)" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-slate-300 hover:border-thy-red transition flex items-center gap-2 text-xs font-mono shadow-sm">
           <i id="audio-icon" class="fa-solid fa-volume-high text-emerald-500"></i>
           <span class="hidden md:inline" id="audio-label">CHIME AÇIK</span>
         </button>
 
-        <!-- Reset Phase -->
-        <button id="btn-reset-current" title="Mevcut Fazı Sıfırla" class="px-2.5 py-2 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-slate-300 hover:border-amber-500 transition flex items-center gap-1.5 text-xs font-mono">
+        <!-- Current Phase Reset -->
+        <button id="btn-reset-current" title="Mevcut Fazı Sıfırla" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-slate-300 hover:border-amber-500 transition flex items-center gap-1.5 text-xs font-mono shadow-sm">
           <i class="fa-solid fa-arrow-rotate-left text-amber-500"></i>
           <span class="hidden sm:inline">FAZI SIFIRLA</span>
         </button>
 
-        <!-- Theme Toggle (Daylight / Night Cockpit) -->
-        <button id="theme-toggle" title="Gündüz / Kokpit Gece Modu" class="p-2 sm:p-2.5 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition shadow-sm">
+        <!-- Day / Night Cockpit Vision Toggle -->
+        <button id="theme-toggle" title="Gündüz / Gece Kokpit Modu" class="p-2.5 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition shadow-sm">
           <i id="theme-toggle-icon" class="fa-solid fa-sun text-sm"></i>
         </button>
       </div>
@@ -151,10 +160,10 @@
   </header>
 
   <!-- ECAM STATUS & PROGRESS BAR -->
-  <section class="bg-slate-100/95 dark:bg-[#0C111C] border-b border-slate-200 dark:border-thy-nightBorder/80 py-2.5 px-4 sm:px-8">
+  <section class="bg-slate-100/90 dark:bg-[#0A101D] border-b border-slate-200 dark:border-thy-nightBorder/90 py-2.5 px-4 sm:px-8">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
       
-      <!-- Phase Info & ECAM Memo Signal -->
+      <!-- Phase Info & ECAM Memo Badge -->
       <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
         <div class="flex items-center gap-2.5">
           <span id="phase-pill" class="w-3 h-3 rounded-full bg-thy-ecamGreen animate-pulse shadow-glow-green"></span>
@@ -162,15 +171,15 @@
             BEFORE START CHECKLIST
           </span>
         </div>
-        <span id="sub-status-memo" class="text-[11px] font-mono font-bold text-thy-ecamGreen border border-emerald-500/40 px-2 py-0.5 rounded bg-emerald-500/10 tracking-wider">
+        <span id="sub-status-memo" class="text-[11px] font-mono font-bold text-thy-ecamGreen border border-emerald-500/40 px-2.5 py-0.5 rounded bg-emerald-500/10 tracking-wider">
           ECAM NORMAL
         </span>
       </div>
 
       <!-- Completion Counter & Gauge -->
       <div class="flex items-center gap-4 w-full sm:w-auto justify-end">
-        <div class="w-32 sm:w-48 bg-slate-200 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
-          <div id="phase-progress-bar" class="bg-thy-red h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+        <div class="w-36 sm:w-56 bg-slate-200 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
+          <div id="phase-progress-bar" class="bg-thy-red h-full rounded-full transition-all duration-300 shadow-glow-red" style="width: 0%;"></div>
         </div>
         <div class="font-mono text-xs font-bold text-slate-600 dark:text-slate-300 whitespace-nowrap">
           <span id="completed-count">0</span> / <span id="total-count">0</span> COMPLETED
@@ -195,7 +204,7 @@
         </button>
       </div>
 
-      <nav id="phases-nav" class="space-y-1.5 overflow-y-auto max-h-[calc(100vh-240px)] pr-1">
+      <nav id="phases-nav" class="space-y-1.5 overflow-y-auto max-h-[calc(100vh-250px)] pr-1">
         <!-- Dynamically injected phases list -->
       </nav>
     </aside>
@@ -565,7 +574,7 @@
           osc.start(now);
           osc.stop(now + 0.12);
         } else if (type === 'complete') {
-          // Airbus ECAM Master Chime Chord
+          // Airbus ECAM Master Chime Chord (F-A-C harmonic triad)
           [587.33, 880, 1174.66].forEach(freq => {
             const chordOsc = ctx.createOscillator();
             const chordGain = ctx.createGain();
@@ -705,7 +714,7 @@
       let actionableCounter = 0;
 
       currentPhase.items.forEach((item, itemIdx) => {
-        // Below The Line or Section Separator
+        // Below The Line Divider
         if (item.type === 'separator') {
           const sepDiv = document.createElement('div');
           sepDiv.className = 'my-4 p-3 rounded-xl border border-amber-500/40 below-line-barrier flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left';
@@ -737,7 +746,7 @@
 
         card.className = `rounded-2xl p-4 sm:p-4.5 border transition-all duration-200 ${borderClasses} flex flex-col sm:flex-row sm:items-center justify-between gap-3`;
 
-        // Left challenge section
+        // Left Challenge Column
         const leftBox = document.createElement('div');
         leftBox.className = 'flex items-start sm:items-center gap-3.5 flex-1';
 
@@ -769,7 +778,7 @@
         `;
         leftBox.appendChild(infoDiv);
 
-        // Right Response section
+        // Right Response Column
         const rightBox = document.createElement('div');
         rightBox.className = 'flex items-center justify-between sm:justify-end gap-3 pl-11 sm:pl-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-slate-800/80';
 
@@ -926,7 +935,7 @@
       }
     });
 
-    /* Audio Mute/Unmute */
+    /* Audio Mute / Unmute */
     btnAudioToggle.addEventListener('click', () => {
       soundEnabled = !soundEnabled;
       if (soundEnabled) {
@@ -941,6 +950,7 @@
       }
     });
 
+    /* Theme Initialization & Switching */
     function initTheme() {
       const savedTheme = localStorage.getItem('thy_theme_mode');
       if (savedTheme === 'light') {
@@ -971,7 +981,7 @@
       }
     });
 
-    /* Toast system */
+    /* Toast Notification System */
     function showToast(message, type = 'info') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
