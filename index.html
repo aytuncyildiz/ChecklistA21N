@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>A321 NEO Checklist • Turkish Airlines EFB</title>
+  <meta name="theme-color" content="#0B0F17">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter, JetBrains Mono, Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            thy: {
+              red: '#C8102E',
+              crimson: '#A60D26',
+              darkRed: '#7A0518',
+              nightBg: '#090D14',
+              nightCard: '#111726',
+              nightBorder: '#1E293B',
+              ecamGreen: '#00E676',
+              ecamCyan: '#00E5FF',
+              ecamAmber: '#FFB300',
+              ecamMagenta: '#E040FB',
+              ecamBlue: '#2979FF',
+              dayBg: '#F8FAFC',
+              dayCard: '#FFFFFF',
+              dayBorder: '#E2E8F0'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          boxShadow: {
+            'glow-red': '0 0 25px rgba(200, 16, 46, 0.4)',
+            'glow-green': '0 0 25px rgba(0, 230, 118, 0.4)',
+            'glow-amber': '0 0 25px rgba(255, 179, 0, 0.35)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Safe Area Insets for iOS Home Indicator & Notch */
+    body {
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    .dark ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 9999px; }
+    .dark ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
+
+    /* Frosted Glass Avionics Glass */
+    .efb-glass {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    /* Pulse Glow on Current Active Checklist Item */
+    @keyframes ecamPulse {
+      0%, 100% { border-color: rgba(0, 230, 118, 0.85); box-shadow: 0 0 16px rgba(0, 230, 118, 0.28); }
+      50% { border-color: rgba(0, 230, 118, 0.35); box-shadow: 0 0 4px rgba(0, 230, 118, 0.1); }
+    }
+    .active-item-glow {
+      animation: ecamPulse 2s infinite ease-in-out;
+    }
+
+    /* Below the line amber caution barrier */
+    .below-line-barrier {
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 179, 0, 0.12),
+        rgba(255, 179, 0, 0.12) 12px,
+        rgba(255, 179, 0, 0.04) 12px,
+        rgba(255, 179, 0, 0.04) 24px
+      );
+    }
+  </style>
+</head>
+<body class="bg-thy-dayBg dark:bg-thy-nightBg text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans selection:bg-thy-red selection:text-white transition-colors duration-300 relative overflow-x-hidden">
+
+  <!-- TOP HEADER / EFB AVIONICS BAR -->
+  <header class="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-thy-nightBorder bg-white/95 dark:bg-thy-nightBg/95 efb-glass shadow-sm transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3">
+      
+      <!-- Brand & Aircraft Info -->
+      <div class="flex items-center gap-3">
+        <!-- Turkish Airlines Official Wild Goose Emblem -->
+        <div class="w-10 h-10 rounded-full bg-thy-red flex items-center justify-center shadow-lg shadow-red-700/30 shrink-0">
+          <svg class="w-6 h-6 text-white" viewBox="0 0 100 100" fill="currentColor">
+            <circle cx="50" cy="50" r="48" fill="#C8102E" />
+            <path d="M78 28 C64 34, 46 44, 30 52 C22 56, 17 61, 24 64 C32 67, 44 63, 58 56 C52 64, 42 74, 33 80 C27 84, 25 87, 32 87 C44 87, 60 74, 72 61 C82 50, 89 36, 88 30 C87 26, 83 26, 78 28 Z" fill="#FFFFFF"/>
+            <path d="M49 46 C59 38, 70 31, 79 26 C82 25, 84 27, 82 30 C76 39, 68 49, 58 58 C50 54, 47 48, 49 46 Z" fill="#FFFFFF"/>
+          </svg>
+        </div>
+
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-display font-extrabold tracking-tight text-base sm:text-lg text-slate-900 dark:text-white">
+              TURKISH AIRLINES
+            </h1>
+            <span class="text-[10px] font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-red-100 dark:bg-red-950/80 text-thy-red border border-red-200 dark:border-red-900">
+              A321-271NX
+            </span>
+          </div>
+          <p class="text-[11px] font-mono text-slate-500 dark:text-slate-400">FLIGHT CREW OPERATING MANUAL • EFB CHECKLIST</p>
+        </div>
+      </div>
+
+      <!-- Quick Action Controls -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Chime Sound Toggle -->
+        <button id="btn-audio-toggle" title="Kokpit Ses İkazı (Aç/Kapat)" class="px-2.5 py-2 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-slate-300 hover:border-thy-red transition flex items-center gap-2 text-xs font-mono">
+          <i id="audio-icon" class="fa-solid fa-volume-high text-emerald-500"></i>
+          <span class="hidden md:inline" id="audio-label">CHIME AÇIK</span>
+        </button>
+
+        <!-- Reset Phase -->
+        <button id="btn-reset-current" title="Mevcut Fazı Sıfırla" class="px-2.5 py-2 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-slate-300 hover:border-amber-500 transition flex items-center gap-1.5 text-xs font-mono">
+          <i class="fa-solid fa-arrow-rotate-left text-amber-500"></i>
+          <span class="hidden sm:inline">FAZI SIFIRLA</span>
+        </button>
+
+        <!-- Theme Toggle (Daylight / Night Cockpit) -->
+        <button id="theme-toggle" title="Gündüz / Kokpit Gece Modu" class="p-2 sm:p-2.5 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition shadow-sm">
+          <i id="theme-toggle-icon" class="fa-solid fa-sun text-sm"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ECAM STATUS & PROGRESS BAR -->
+  <section class="bg-slate-100/95 dark:bg-[#0C111C] border-b border-slate-200 dark:border-thy-nightBorder/80 py-2.5 px-4 sm:px-8">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      
+      <!-- Phase Info & ECAM Memo Signal -->
+      <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
+        <div class="flex items-center gap-2.5">
+          <span id="phase-pill" class="w-3 h-3 rounded-full bg-thy-ecamGreen animate-pulse shadow-glow-green"></span>
+          <span id="active-phase-name" class="font-mono text-xs sm:text-sm font-bold text-slate-900 dark:text-white tracking-wide uppercase">
+            BEFORE START CHECKLIST
+          </span>
+        </div>
+        <span id="sub-status-memo" class="text-[11px] font-mono font-bold text-thy-ecamGreen border border-emerald-500/40 px-2 py-0.5 rounded bg-emerald-500/10 tracking-wider">
+          ECAM NORMAL
+        </span>
+      </div>
+
+      <!-- Completion Counter & Gauge -->
+      <div class="flex items-center gap-4 w-full sm:w-auto justify-end">
+        <div class="w-32 sm:w-48 bg-slate-200 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
+          <div id="phase-progress-bar" class="bg-thy-red h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+        </div>
+        <div class="font-mono text-xs font-bold text-slate-600 dark:text-slate-300 whitespace-nowrap">
+          <span id="completed-count">0</span> / <span id="total-count">0</span> COMPLETED
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-7 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+    <!-- LEFT SIDEBAR: Flight Phase Navigation (4 cols) -->
+    <aside class="lg:col-span-4 rounded-2xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard p-4 shadow-sm">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-3">
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-2">
+          <i class="fa-solid fa-plane-departure text-thy-red"></i>
+          <span>UÇUŞ FAZLARI (10 PHASES)</span>
+        </span>
+        <button id="btn-reset-all" class="text-[10px] font-mono font-bold text-slate-400 hover:text-red-500 transition uppercase" title="Tüm Uçuşu Sıfırla">
+          TÜMÜNÜ SIFIRLA
+        </button>
+      </div>
+
+      <nav id="phases-nav" class="space-y-1.5 overflow-y-auto max-h-[calc(100vh-240px)] pr-1">
+        <!-- Dynamically injected phases list -->
+      </nav>
+    </aside>
+
+    <!-- RIGHT MAIN PANEL: Active Checklist Items & Touch Target (8 cols) -->
+    <div class="lg:col-span-8 space-y-4">
+      
+      <!-- Phase Header Card with Hero OK Button -->
+      <div class="rounded-2xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2.5 mb-1.5 flex-wrap">
+            <span id="header-phase-badge" class="px-2.5 py-0.5 rounded-md bg-thy-red text-white font-mono font-bold text-xs tracking-wider">
+              PHASE 1/10
+            </span>
+            <h2 id="header-phase-title" class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 dark:text-white">
+              BEFORE START CHECKLIST
+            </h2>
+          </div>
+          <p id="header-phase-desc" class="text-xs text-slate-500 dark:text-slate-400 font-mono">
+            Uçak hazırlığı, yakıt ve kalkış verilerinin doğrulanması.
+          </p>
+        </div>
+
+        <!-- Master OK / CHECK Action Button -->
+        <button id="btn-action-ok" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-mono font-extrabold text-sm sm:text-base tracking-widest shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 active:scale-95 transition flex items-center justify-center gap-2.5 shrink-0">
+          <i class="fa-solid fa-check-double text-lg"></i>
+          <span id="btn-action-label">OK / CHECK</span>
+          <span class="text-[10px] px-1.5 py-0.5 rounded bg-black/25 text-emerald-100 font-mono font-normal hidden md:inline">SPACE</span>
+        </button>
+      </div>
+
+      <!-- Checklist Challenge & Response Cards Container -->
+      <div id="checklist-items-container" class="space-y-3">
+        <!-- Dynamically rendered checklist items -->
+      </div>
+
+      <!-- Phase Complete Congratulatory Banner -->
+      <div id="phase-complete-banner" class="hidden rounded-2xl border-2 border-emerald-500 bg-emerald-500/10 p-6 text-center shadow-glow-green transition-all">
+        <div class="w-12 h-12 mx-auto rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl mb-3 shadow-lg shadow-emerald-500/40">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <h3 class="font-display font-extrabold text-lg text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">
+          CHECKLIST COMPLETED
+        </h3>
+        <p id="complete-msg" class="text-xs font-mono text-slate-600 dark:text-slate-300 mt-1 max-w-md mx-auto">
+          Tüm adımlar başarıyla tamamlandı. Sıradaki uçuş fazına geçebilirsiniz.
+        </p>
+        <button id="btn-next-phase" class="mt-4 px-6 py-2.5 rounded-xl bg-thy-red hover:bg-red-600 text-white font-mono font-bold text-xs tracking-wider transition shadow-lg shadow-red-500/30">
+          SONRAKİ FAZA GEÇ (NEXT PHASE) <i class="fa-solid fa-chevron-right ml-1"></i>
+        </button>
+      </div>
+
+      <!-- Pilot Quick Reference Footer Strip -->
+      <div class="flex flex-wrap items-center justify-between gap-2 p-3 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-500 dark:text-slate-400">
+        <div class="flex items-center gap-3">
+          <span class="flex items-center gap-1">
+            <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-[10px] text-slate-700 dark:text-slate-200">SPACE</kbd>
+            <span>veya</span>
+            <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-[10px] text-slate-700 dark:text-slate-200">ENTER</kbd>
+            <span>: Sıradaki Maddeyi Doğrula</span>
+          </span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span>THY A321 NEO Fleet SOP Crosscheck</span>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Toast Notification Stack -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <script>
+    /* =========================================================
+       AIRBUS A321 NEO TURKISH AIRLINES CHECKLIST DATABASE
+       ========================================================= */
+    const CHECKLIST_DATA = [
+      {
+        id: 'before_start',
+        name: 'BEFORE START',
+        fullName: 'BEFORE START CHECKLIST',
+        desc: 'Kokpit hazırlığı, ağırlık-denge ve pushback öncesi kontroller.',
+        items: [
+          { id: 'bs_1', challenge: 'Cockpit Prep', response: 'Completed', type: 'standard' },
+          { id: 'bs_2', challenge: 'Gear Pins & Covers', response: 'Removed', type: 'standard' },
+          { id: 'bs_3', challenge: 'Signs', response: 'On / Auto', type: 'standard' },
+          { id: 'bs_4', challenge: 'ADIRS', response: 'NAV', type: 'standard' },
+          { 
+            id: 'bs_5', 
+            challenge: 'Fuel Quantity', 
+            response: '____ kg / Balanced', 
+            type: 'variable', 
+            varLabel: 'Fuel (kg)', 
+            defaultVal: '14200',
+            unit: 'kg / Balanced'
+          },
+          { 
+            id: 'bs_6', 
+            challenge: 'TO Data', 
+            response: 'Set (ZFW, ZFWCG, V1, VR, V2, Flex/TOGA)', 
+            type: 'standard',
+            note: 'MCDU PERF sayfasında crosscheck edildi'
+          },
+          { 
+            id: 'bs_7', 
+            challenge: 'Baro Ref', 
+            response: '____ Set / Crosschecked', 
+            type: 'variable', 
+            varLabel: 'QNH (hPa)', 
+            defaultVal: '1013',
+            unit: 'hPa Set / Crosschecked'
+          },
+          { 
+            id: 'bs_line', 
+            type: 'separator', 
+            title: '--- Below The Line ---', 
+            condition: 'Pushback & Start izni alındığında uygulanır' 
+          },
+          { id: 'bs_8', challenge: 'Windows / Doors', response: 'Closed', type: 'standard' },
+          { id: 'bs_9', challenge: 'Beacon', response: 'On', type: 'standard' },
+          { id: 'bs_10', challenge: 'Thr Levers', response: 'Idle', type: 'standard' },
+          { id: 'bs_11', challenge: 'Parking Brake', response: 'As Required', type: 'standard' }
+        ]
+      },
+      {
+        id: 'after_start',
+        name: 'AFTER START',
+        fullName: 'AFTER START CHECKLIST',
+        desc: 'Motor çalıştırma sonrası sistem kontrolleri ve trim ayarları.',
+        items: [
+          { id: 'as_1', challenge: 'Anti Ice', response: 'As Required', type: 'standard' },
+          { id: 'as_2', challenge: 'ECAM Status', response: 'Checked', type: 'standard' },
+          { 
+            id: 'as_3', 
+            challenge: 'Pitch Trim', 
+            response: '____% Set', 
+            type: 'variable', 
+            varLabel: 'Pitch Trim (%)', 
+            defaultVal: '1.2 UP',
+            unit: '% Set'
+          },
+          { id: 'as_4', challenge: 'Rudder Trim', response: '0 / Neutral', type: 'standard' }
+        ]
+      },
+      {
+        id: 'taxi',
+        name: 'TAXI',
+        fullName: 'TAXI CHECKLIST',
+        desc: 'Taksi esnasında uçuş kumandaları, flap ve kalkış memosu.',
+        items: [
+          { id: 'tx_1', challenge: 'Flight Controls', response: 'Checked (Full UP/DOWN/LEFT/RIGHT, Neutral, Rudder Full travel)', type: 'standard' },
+          { 
+            id: 'tx_2', 
+            challenge: 'Flaps Setting', 
+            response: 'Conf ____', 
+            type: 'variable', 
+            varLabel: 'Flaps Conf', 
+            defaultVal: '1+F',
+            unit: ''
+          },
+          { id: 'tx_3', challenge: 'Spoilers', response: 'Armed', type: 'standard' },
+          { id: 'tx_4', challenge: 'Auto Brake', response: 'MAX', type: 'standard' },
+          { id: 'tx_5', challenge: 'Takeoff Memo', response: 'No Blue', type: 'standard', note: 'ECAM üzerinde kalkış maddelerinin hazır olması' },
+          { 
+            id: 'tx_line', 
+            type: 'separator', 
+            title: '--- Below The Line ---', 
+            condition: 'Kalkış sırası yaklaşırken / Runway kabullerinde uygulanır' 
+          },
+          { id: 'tx_6', challenge: 'Cabin Report', response: 'Ready', type: 'standard' },
+          { id: 'tx_7', challenge: 'TCAS', response: 'TA/RA', type: 'standard' },
+          { id: 'tx_8', challenge: 'Eng Mode Sel', response: 'As Required (Norm / Ign)', type: 'standard' },
+          { id: 'tx_9', challenge: 'Packs', response: 'As Required (Off veya APU Bleed beslemeli)', type: 'standard' }
+        ]
+      },
+      {
+        id: 'line_up',
+        name: 'LINE-UP',
+        fullName: 'LINE-UP CHECKLIST',
+        desc: 'Pist içi beklemede/girişte sessiz veya sözlü doğrulanır.',
+        items: [
+          { id: 'lu_1', challenge: 'TCAS', response: 'TA/RA', type: 'standard' },
+          { id: 'lu_2', challenge: 'Packs', response: 'Set', type: 'standard' },
+          { id: 'lu_3', challenge: 'Exterior Lights', response: 'Takeoff / On', type: 'standard' }
+        ]
+      },
+      {
+        id: 'after_takeoff',
+        name: 'AFTER TAKEOFF',
+        fullName: 'AFTER TAKEOFF CHECKLIST / FLOW',
+        desc: 'Tırmanış safhasında uçak konfigürasyonu ve baro ayarı.',
+        items: [
+          { id: 'at_1', challenge: 'Landing Gear', response: 'Up', type: 'standard' },
+          { id: 'at_2', challenge: 'Flaps', response: 'Retracted (0 / Clean)', type: 'standard' },
+          { id: 'at_3', challenge: 'Spoilers', response: 'Disarmed', type: 'standard' },
+          { id: 'at_4', challenge: 'APU Bleed / APU Master', response: 'Off', type: 'standard' },
+          { id: 'at_5', challenge: 'Eng Mode Selector', response: 'Normal', type: 'standard' },
+          { id: 'at_6', challenge: 'Anti Ice', response: 'As Required', type: 'standard' },
+          { id: 'at_7', challenge: 'TCAS', response: 'TA/RA (Seçili olduğu teyit edilir)', type: 'standard' },
+          { id: 'at_8', challenge: 'Baro Reference', response: 'Standard Set & Crosschecked', type: 'standard', note: 'Transition Altitude geçilirken STD seçildi' },
+          { id: 'at_9', challenge: 'ECAM Memo', response: 'Checked', type: 'standard' }
+        ]
+      },
+      {
+        id: 'before_descent',
+        name: 'BEFORE DESCENT',
+        fullName: 'BEFORE DESCENT CHECKLIST',
+        desc: 'Alçalma planı, yaklaşma brifingi ve iniş performansı.',
+        items: [
+          { id: 'bd_1', challenge: 'Landing Performance (MCDU PERF APPR)', response: 'Calculated & Inserted (QNH, Temp, Wind, Vapp, MDA/DH)', type: 'standard' },
+          { id: 'bd_2', challenge: 'Navigation / Radio Aids', response: 'Checked & Tuned (ILS frekansı ve Course crosscheck)', type: 'standard' },
+          { id: 'bd_3', challenge: 'Auto Brake', response: 'Low / Med / BTV', type: 'standard' },
+          { id: 'bd_4', challenge: 'Approach Briefing', response: 'Completed', type: 'standard' },
+          { id: 'bd_5', challenge: 'Descent Clearance', response: 'Obtained', type: 'standard' },
+          { id: 'bd_6', challenge: 'Anti Ice', response: 'As Required', type: 'standard' },
+          { id: 'bd_7', challenge: 'ECAM Status', response: 'Checked', type: 'standard' },
+          { id: 'bd_8', challenge: 'Signs (Seat Belts)', response: 'On', type: 'standard' }
+        ]
+      },
+      {
+        id: 'approach',
+        name: 'APPROACH',
+        fullName: 'APPROACH CHECKLIST',
+        desc: 'Son yaklaşma öncesi baro referansı ve minimumlar.',
+        items: [
+          { id: 'ap_1', challenge: 'Briefing', response: 'Confirmed', type: 'standard' },
+          { id: 'ap_2', challenge: 'ECAM Status', response: 'Checked', type: 'standard' },
+          { id: 'ap_3', challenge: 'Seat Belts', response: 'On', type: 'standard' },
+          { 
+            id: 'ap_4', 
+            challenge: 'Baro Ref', 
+            response: '____ Set / Crosschecked', 
+            type: 'variable', 
+            varLabel: 'İniş QNH', 
+            defaultVal: '1018',
+            unit: 'hPa Set / Crosschecked'
+          },
+          { id: 'ap_5', challenge: 'MDA / DH', response: 'Set', type: 'standard' }
+        ]
+      },
+      {
+        id: 'landing',
+        name: 'LANDING',
+        fullName: 'LANDING CHECKLIST',
+        desc: 'Teker koyma öncesi flap, iniş takımı ve kabin hazırlığı.',
+        items: [
+          { id: 'ld_1', challenge: 'Cabin', response: 'Ready', type: 'standard' },
+          { id: 'ld_2', challenge: 'Auto Thrust', response: 'Speed / Off', type: 'standard' },
+          { id: 'ld_3', challenge: 'Auto Brake', response: 'Set (Low / Med / BTV)', type: 'standard' },
+          { id: 'ld_4', challenge: 'Landing Gear', response: 'Down (3 Green)', type: 'standard', note: '3 Yeşil lamba görsel kontrolü' },
+          { id: 'ld_5', challenge: 'Flaps', response: 'Conf 3 / Conf Full', type: 'standard' }
+        ]
+      },
+      {
+        id: 'parking',
+        name: 'PARKING',
+        fullName: 'PARKING CHECKLIST',
+        desc: 'Park pozisyonunda motor durdurma ve takoz kontrolü.',
+        items: [
+          { id: 'pk_1', challenge: 'Parking Brake / Chocks', response: 'Set / In Place', type: 'standard' },
+          { id: 'pk_2', challenge: 'Engines (1 & 2)', response: 'Off', type: 'standard' },
+          { id: 'pk_3', challenge: 'Wing Anti Ice', response: 'Off', type: 'standard' },
+          { id: 'pk_4', challenge: 'Fuel Pumps', response: 'Off', type: 'standard' },
+          { id: 'pk_5', challenge: 'Beacon', response: 'Off', type: 'standard' }
+        ]
+      },
+      {
+        id: 'securing',
+        name: 'SECURING AIRCRAFT',
+        fullName: 'SECURING THE AIRCRAFT CHECKLIST',
+        desc: 'Uçağın tamamen terk edilmesi ve sistemlerin kapatılması.',
+        items: [
+          { id: 'sc_1', challenge: 'ADIRS', response: 'Off', type: 'standard' },
+          { id: 'sc_2', challenge: 'Oxygen', response: 'Off', type: 'standard' },
+          { id: 'sc_3', challenge: 'APU / Ext Power', response: 'Off', type: 'standard' },
+          { id: 'sc_4', challenge: 'Batteries', response: 'Off', type: 'standard' }
+        ]
+      }
+    ];
+
+    let currentPhaseIndex = 0;
+    let checkedState = {};
+    let variableInputs = {};
+    let soundEnabled = true;
+
+    function initState() {
+      try {
+        const savedChecked = localStorage.getItem('thy_a321_checked_items');
+        if (savedChecked) {
+          const parsed = JSON.parse(savedChecked);
+          Object.keys(parsed).forEach(k => {
+            checkedState[k] = new Set(parsed[k]);
+          });
+        }
+        const savedVars = localStorage.getItem('thy_a321_vars');
+        if (savedVars) {
+          variableInputs = JSON.parse(savedVars);
+        }
+        const savedPhase = localStorage.getItem('thy_a321_active_phase');
+        if (savedPhase !== null) {
+          currentPhaseIndex = parseInt(savedPhase, 10) || 0;
+        }
+      } catch (e) {
+        console.warn('LocalStorage error', e);
+      }
+
+      CHECKLIST_DATA.forEach(p => {
+        if (!checkedState[p.id]) {
+          checkedState[p.id] = new Set();
+        }
+        p.items.forEach(item => {
+          if (item.type === 'variable' && !variableInputs[item.id]) {
+            variableInputs[item.id] = item.defaultVal || '';
+          }
+        });
+      });
+    }
+
+    function saveState() {
+      try {
+        const serializable = {};
+        Object.keys(checkedState).forEach(k => {
+          serializable[k] = Array.from(checkedState[k]);
+        });
+        localStorage.setItem('thy_a321_checked_items', JSON.stringify(serializable));
+        localStorage.setItem('thy_a321_vars', JSON.stringify(variableInputs));
+        localStorage.setItem('thy_a321_active_phase', currentPhaseIndex.toString());
+      } catch (e) {
+        console.warn('Save failed', e);
+      }
+    }
+
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) {
+          audioCtx = new AudioContext();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playTone(type = 'check') {
+      if (!soundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (type === 'check') {
+          // Avionics dual confirmation chime
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(880, now);
+          osc.frequency.exponentialRampToValueAtTime(1320, now + 0.08);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+          osc.start(now);
+          osc.stop(now + 0.12);
+        } else if (type === 'complete') {
+          // Airbus ECAM Master Chime Chord
+          [587.33, 880, 1174.66].forEach(freq => {
+            const chordOsc = ctx.createOscillator();
+            const chordGain = ctx.createGain();
+            chordOsc.type = 'sine';
+            chordOsc.frequency.value = freq;
+            chordGain.gain.setValueAtTime(0.07, now);
+            chordGain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+            chordOsc.connect(chordGain);
+            chordGain.connect(ctx.destination);
+            chordOsc.start(now);
+            chordOsc.stop(now + 0.4);
+          });
+        } else if (type === 'click') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(440, now);
+          gain.gain.setValueAtTime(0.04, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+          osc.start(now);
+          osc.stop(now + 0.03);
+        }
+      } catch (err) {
+        console.warn('Audio tone error', err);
+      }
+    }
+
+    const phasesNav = document.getElementById('phases-nav');
+    const headerPhaseBadge = document.getElementById('header-phase-badge');
+    const headerPhaseTitle = document.getElementById('header-phase-title');
+    const headerPhaseDesc = document.getElementById('header-phase-desc');
+    const checklistItemsContainer = document.getElementById('checklist-items-container');
+    const btnActionOk = document.getElementById('btn-action-ok');
+    const btnActionLabel = document.getElementById('btn-action-label');
+    const phaseCompleteBanner = document.getElementById('phase-complete-banner');
+    const btnNextPhase = document.getElementById('btn-next-phase');
+    const activePhaseName = document.getElementById('active-phase-name');
+    const phaseProgressBar = document.getElementById('phase-progress-bar');
+    const completedCountEl = document.getElementById('completed-count');
+    const totalCountEl = document.getElementById('total-count');
+    const btnAudioToggle = document.getElementById('btn-audio-toggle');
+    const audioIcon = document.getElementById('audio-icon');
+    const audioLabel = document.getElementById('audio-label');
+    const btnResetCurrent = document.getElementById('btn-reset-current');
+    const btnResetAll = document.getElementById('btn-reset-all');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeToggleIcon = document.getElementById('theme-toggle-icon');
+
+    function renderPhasesSidebar() {
+      phasesNav.innerHTML = '';
+
+      CHECKLIST_DATA.forEach((phase, idx) => {
+        const isCurrent = idx === currentPhaseIndex;
+        const totalItems = phase.items.filter(i => i.type !== 'separator').length;
+        const checkedCount = phase.items.filter(i => i.type !== 'separator' && checkedState[phase.id]?.has(i.id)).length;
+        const isFinished = totalItems > 0 && checkedCount === totalItems;
+
+        const navBtn = document.createElement('button');
+        navBtn.className = `w-full text-left p-3 rounded-xl border transition-all duration-200 flex items-center justify-between gap-2 group ${
+          isCurrent
+            ? 'border-thy-red bg-red-500/10 dark:bg-red-950/40 text-slate-900 dark:text-white shadow-sm'
+            : isFinished
+              ? 'border-emerald-500/40 bg-emerald-50/50 dark:bg-emerald-950/20 text-slate-700 dark:text-slate-300'
+              : 'border-slate-200 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700'
+        }`;
+
+        navBtn.onclick = () => {
+          switchPhase(idx);
+          playTone('click');
+        };
+
+        navBtn.innerHTML = `
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span class="w-6 h-6 rounded-lg text-xs font-mono font-bold flex items-center justify-center shrink-0 ${
+              isFinished 
+                ? 'bg-emerald-500 text-white' 
+                : isCurrent 
+                  ? 'bg-thy-red text-white' 
+                  : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+            }">
+              ${isFinished ? '<i class="fa-solid fa-check text-[10px]"></i>' : (idx + 1)}
+            </span>
+            <span class="font-mono text-xs font-bold truncate ${isCurrent ? 'text-slate-900 dark:text-white' : ''}">
+              ${phase.name}
+            </span>
+          </div>
+
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span class="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded ${
+              isFinished 
+                ? 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300' 
+                : 'bg-slate-200/70 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
+            }">
+              ${checkedCount}/${totalItems}
+            </span>
+          </div>
+        `;
+
+        phasesNav.appendChild(navBtn);
+      });
+    }
+
+    function getNextUncheckedIndex(phase) {
+      return phase.items.findIndex(item => item.type !== 'separator' && !checkedState[phase.id].has(item.id));
+    }
+
+    function renderActiveChecklist() {
+      const currentPhase = CHECKLIST_DATA[currentPhaseIndex];
+      headerPhaseBadge.innerText = `PHASE ${currentPhaseIndex + 1}/${CHECKLIST_DATA.length}`;
+      headerPhaseTitle.innerText = currentPhase.fullName;
+      headerPhaseDesc.innerText = currentPhase.desc;
+      activePhaseName.innerText = currentPhase.fullName;
+
+      const actionableItems = currentPhase.items.filter(i => i.type !== 'separator');
+      const totalCount = actionableItems.length;
+      const checkedCount = actionableItems.filter(i => checkedState[currentPhase.id].has(i.id)).length;
+      const progressPercent = totalCount > 0 ? (checkedCount / totalCount) * 100 : 0;
+
+      phaseProgressBar.style.width = `${progressPercent}%`;
+      completedCountEl.innerText = checkedCount;
+      totalCountEl.innerText = totalCount;
+
+      const activeUncheckedIndex = getNextUncheckedIndex(currentPhase);
+      const isComplete = activeUncheckedIndex === -1;
+
+      if (isComplete) {
+        btnActionLabel.innerText = 'TAMAMLANDI';
+        btnActionOk.classList.remove('from-emerald-600', 'to-teal-600');
+        btnActionOk.classList.add('bg-slate-400', 'cursor-not-allowed', 'opacity-60');
+        phaseCompleteBanner.classList.remove('hidden');
+      } else {
+        btnActionLabel.innerText = 'OK / CHECK';
+        btnActionOk.classList.remove('bg-slate-400', 'cursor-not-allowed', 'opacity-60');
+        btnActionOk.classList.add('from-emerald-600', 'to-teal-600');
+        phaseCompleteBanner.classList.add('hidden');
+      }
+
+      checklistItemsContainer.innerHTML = '';
+      let actionableCounter = 0;
+
+      currentPhase.items.forEach((item, itemIdx) => {
+        // Below The Line or Section Separator
+        if (item.type === 'separator') {
+          const sepDiv = document.createElement('div');
+          sepDiv.className = 'my-4 p-3 rounded-xl border border-amber-500/40 below-line-barrier flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left';
+          sepDiv.innerHTML = `
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-triangle-exclamation text-amber-500 text-sm animate-pulse"></i>
+              <span class="font-mono font-bold text-xs tracking-wider uppercase text-amber-600 dark:text-amber-400">${item.title}</span>
+            </div>
+            <span class="text-[11px] font-mono text-slate-600 dark:text-amber-200/80 bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/20">
+              ${item.condition}
+            </span>
+          `;
+          checklistItemsContainer.appendChild(sepDiv);
+          return;
+        }
+
+        const isChecked = checkedState[currentPhase.id].has(item.id);
+        const isActiveTarget = itemIdx === activeUncheckedIndex;
+        actionableCounter++;
+
+        const card = document.createElement('div');
+        
+        let borderClasses = 'border-slate-200 dark:border-slate-800 bg-white dark:bg-thy-nightCard';
+        if (isChecked) {
+          borderClasses = 'border-emerald-500/30 bg-emerald-500/5 dark:bg-emerald-950/15 opacity-90';
+        } else if (isActiveTarget) {
+          borderClasses = 'border-emerald-500 dark:border-emerald-400 bg-emerald-500/10 dark:bg-emerald-950/30 active-item-glow shadow-md';
+        }
+
+        card.className = `rounded-2xl p-4 sm:p-4.5 border transition-all duration-200 ${borderClasses} flex flex-col sm:flex-row sm:items-center justify-between gap-3`;
+
+        // Left challenge section
+        const leftBox = document.createElement('div');
+        leftBox.className = 'flex items-start sm:items-center gap-3.5 flex-1';
+
+        const checkIconBtn = document.createElement('button');
+        checkIconBtn.type = 'button';
+        checkIconBtn.title = isChecked ? 'İşareti Kaldır' : 'Maddeni Doğrula';
+        checkIconBtn.className = `w-8 h-8 rounded-xl flex items-center justify-center font-mono text-xs font-bold transition-transform shrink-0 ${
+          isChecked 
+            ? 'bg-emerald-500 text-white shadow-glow-green scale-100' 
+            : isActiveTarget 
+              ? 'bg-emerald-500/20 text-emerald-500 border-2 border-emerald-500' 
+              : 'border border-slate-300 dark:border-slate-700 text-slate-400 hover:border-slate-400'
+        }`;
+        checkIconBtn.innerHTML = isChecked ? '<i class="fa-solid fa-check text-sm"></i>' : actionableCounter;
+        checkIconBtn.onclick = () => toggleCheckItem(item.id);
+
+        leftBox.appendChild(checkIconBtn);
+
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'flex-1';
+        infoDiv.innerHTML = `
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="font-mono text-sm sm:text-base font-bold tracking-tight ${isChecked ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'}">
+              ${item.challenge}
+            </span>
+            ${isActiveTarget ? '<span class="px-2 py-0.2 text-[9px] font-mono font-bold tracking-widest bg-emerald-500 text-white rounded uppercase animate-pulse">SIRADAKİ</span>' : ''}
+          </div>
+          ${item.note ? `<p class="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-0.5"><i class="fa-solid fa-info-circle mr-1 text-sky-500"></i>${item.note}</p>` : ''}
+        `;
+        leftBox.appendChild(infoDiv);
+
+        // Right Response section
+        const rightBox = document.createElement('div');
+        rightBox.className = 'flex items-center justify-between sm:justify-end gap-3 pl-11 sm:pl-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-slate-800/80';
+
+        if (item.type === 'variable') {
+          const inputWrapper = document.createElement('div');
+          inputWrapper.className = 'flex items-center gap-2';
+          const currentVal = variableInputs[item.id] !== undefined ? variableInputs[item.id] : item.defaultVal;
+
+          inputWrapper.innerHTML = `
+            <div class="relative flex items-center">
+              <input type="text" id="input-${item.id}" value="${currentVal}" placeholder="Değer" class="w-24 sm:w-28 px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-thy-ecamCyan font-mono font-bold text-xs focus:ring-2 focus:ring-thy-red/40 focus:border-thy-red outline-none text-center">
+              <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400 ml-2">${item.unit || ''}</span>
+            </div>
+          `;
+
+          const inputField = inputWrapper.querySelector('input');
+          inputField.addEventListener('input', (e) => {
+            variableInputs[item.id] = e.target.value;
+            saveState();
+          });
+          inputField.addEventListener('click', (e) => e.stopPropagation());
+
+          rightBox.appendChild(inputWrapper);
+        } else {
+          const responseSpan = document.createElement('span');
+          responseSpan.className = `font-mono text-xs sm:text-sm font-bold tracking-wide ${
+            isChecked 
+              ? 'text-emerald-600 dark:text-thy-ecamGreen' 
+              : 'text-slate-600 dark:text-thy-ecamCyan'
+          }`;
+          responseSpan.innerText = item.response;
+          rightBox.appendChild(responseSpan);
+        }
+
+        const okRowBtn = document.createElement('button');
+        okRowBtn.type = 'button';
+        okRowBtn.className = `px-3.5 py-1.5 rounded-lg font-mono text-xs font-bold tracking-wider transition active:scale-95 ${
+          isChecked
+            ? 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'
+            : isActiveTarget
+              ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm'
+              : 'bg-slate-100 dark:bg-slate-800 hover:bg-emerald-600 hover:text-white text-slate-700 dark:text-slate-300'
+        }`;
+        okRowBtn.innerText = isChecked ? 'RE-CHECK' : 'CHECK';
+        okRowBtn.onclick = (e) => {
+          e.stopPropagation();
+          toggleCheckItem(item.id);
+        };
+        rightBox.appendChild(okRowBtn);
+
+        card.appendChild(leftBox);
+        card.appendChild(rightBox);
+
+        checklistItemsContainer.appendChild(card);
+      });
+
+      renderPhasesSidebar();
+    }
+
+    function confirmCurrentActiveItem() {
+      const currentPhase = CHECKLIST_DATA[currentPhaseIndex];
+      const activeIdx = getNextUncheckedIndex(currentPhase);
+
+      if (activeIdx !== -1) {
+        const item = currentPhase.items[activeIdx];
+        checkedState[currentPhase.id].add(item.id);
+        saveState();
+        playTone('check');
+
+        const nextIdx = getNextUncheckedIndex(currentPhase);
+        if (nextIdx === -1) {
+          playTone('complete');
+          showToast(`${currentPhase.name} checklist tamamlandı!`, 'success');
+        }
+
+        renderActiveChecklist();
+      } else {
+        if (currentPhaseIndex < CHECKLIST_DATA.length - 1) {
+          switchPhase(currentPhaseIndex + 1);
+          playTone('click');
+        } else {
+          showToast('Tüm uçuş checklistleri tamamlandı! Emniyetli inişler dileriz.', 'success');
+        }
+      }
+    }
+
+    function toggleCheckItem(itemId) {
+      const currentPhase = CHECKLIST_DATA[currentPhaseIndex];
+      if (checkedState[currentPhase.id].has(itemId)) {
+        checkedState[currentPhase.id].delete(itemId);
+        playTone('click');
+      } else {
+        checkedState[currentPhase.id].add(itemId);
+        playTone('check');
+        const nextIdx = getNextUncheckedIndex(currentPhase);
+        if (nextIdx === -1) {
+          playTone('complete');
+          showToast(`${currentPhase.name} checklist tamamlandı!`, 'success');
+        }
+      }
+      saveState();
+      renderActiveChecklist();
+    }
+
+    function switchPhase(newIndex) {
+      if (newIndex >= 0 && newIndex < CHECKLIST_DATA.length) {
+        currentPhaseIndex = newIndex;
+        saveState();
+        renderActiveChecklist();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    btnResetCurrent.addEventListener('click', () => {
+      const currentPhase = CHECKLIST_DATA[currentPhaseIndex];
+      checkedState[currentPhase.id].clear();
+      saveState();
+      playTone('click');
+      renderActiveChecklist();
+      showToast(`${currentPhase.name} maddeleri sıfırlandı`, 'info');
+    });
+
+    btnResetAll.addEventListener('click', () => {
+      CHECKLIST_DATA.forEach(p => {
+        checkedState[p.id].clear();
+      });
+      saveState();
+      playTone('click');
+      renderActiveChecklist();
+      showToast('Tüm checklist fazları sıfırlandı', 'info');
+    });
+
+    btnNextPhase.addEventListener('click', () => {
+      if (currentPhaseIndex < CHECKLIST_DATA.length - 1) {
+        switchPhase(currentPhaseIndex + 1);
+        playTone('click');
+      } else {
+        showToast('Son fazdasınız: Securing Aircraft tamamlandı.', 'info');
+      }
+    });
+
+    btnActionOk.addEventListener('click', () => {
+      confirmCurrentActiveItem();
+    });
+
+    /* Keyboard Shortcuts */
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+      }
+      if (e.code === 'Space' || e.key === ' ' || e.code === 'Enter') {
+        e.preventDefault();
+        confirmCurrentActiveItem();
+      }
+    });
+
+    /* Audio Mute/Unmute */
+    btnAudioToggle.addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      if (soundEnabled) {
+        audioIcon.className = 'fa-solid fa-volume-high text-emerald-500';
+        audioLabel.innerText = 'CHIME AÇIK';
+        playTone('check');
+        showToast('Kokpit ses ikazları aktif', 'info');
+      } else {
+        audioIcon.className = 'fa-solid fa-volume-xmark text-slate-400';
+        audioLabel.innerText = 'CHIME KAPALI';
+        showToast('Kokpit ses ikazları kapatıldı', 'info');
+      }
+    });
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('thy_theme_mode');
+      if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        themeToggleIcon.className = 'fa-solid fa-moon text-slate-700';
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        themeToggleIcon.className = 'fa-solid fa-sun text-amber-400';
+      }
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        localStorage.setItem('thy_theme_mode', 'light');
+        themeToggleIcon.className = 'fa-solid fa-moon text-slate-700';
+        showToast('Daylight (Gündüz) Kokpit Modu', 'info');
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        localStorage.setItem('thy_theme_mode', 'dark');
+        themeToggleIcon.className = 'fa-solid fa-sun text-amber-400';
+        showToast('Night Vision (Gece) Kokpit Modu', 'info');
+      }
+    });
+
+    /* Toast system */
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const icon = type === 'success' ? 'fa-circle-check text-emerald-400' : 'fa-circle-info text-sky-400';
+
+      toast.className = 'px-4 py-2.5 rounded-xl bg-slate-900/95 dark:bg-slate-800/95 border border-slate-700 text-white font-mono text-xs shadow-2xl flex items-center gap-2.5 transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto';
+      toast.innerHTML = `<i class="fa-solid ${icon}"></i><span>${message}</span>`;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+
+    /* Initialize Application */
+    window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      initState();
+      renderActiveChecklist();
+    });
+  </script>
+</body>
+</html>
