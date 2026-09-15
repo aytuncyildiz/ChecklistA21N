@@ -5,15 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Airbus A321 NEO Checklist • Turkish Airlines</title>
   
-  <!-- Standalone Mobile Web App Capabilities (iOS & Android) -->
+  <!-- Standalone Mobile App Capabilities (iOS & Android PWA) -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="THY A321 Checklist">
+  <meta name="apple-mobile-web-app-title" content="THY A321">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#080D1A">
+  <meta name="application-name" content="THY A321 Checklist">
+  <meta name="theme-color" content="#C8102E">
+  <meta name="msapplication-navbutton-color" content="#C8102E">
+  <meta name="msapplication-starturl" content="./">
 
-  <!-- Web App Manifest for Standalone Fullscreen Installation -->
-  <link rel="manifest" href="data:application/manifest+json;utf-8,%7B%22name%22%3A%22THY%20A321%20NEO%20Checklist%22%2C%22short_name%22%3A%22A321%20Checklist%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23080D1A%22%2C%22theme_color%22%3A%22%23C8102E%22%7D">
+  <!-- Dynamic SVG App Icon Link (Generated via inline SVG Data URI for iOS & PWA) -->
+  <link rel="apple-touch-icon" id="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23C8102E'/%3E%3Ccircle cx='90' cy='90' r='75' fill='none' stroke='rgba(255,255,255,0.2)' stroke-width='4'/%3E%3Cpath d='M136 54 C112 65, 80 82, 52 96 C38 103, 30 112, 42 118 C56 123, 78 116, 102 103 C92 118, 74 136, 58 147 C48 154, 44 160, 56 160 C78 160, 106 136, 128 113 C146 93, 158 68, 156 57 C154 50, 146 50, 136 54 Z' fill='%23FFFFFF'/%3E%3Cpath d='M86 86 C104 72, 124 59, 140 50 C145 48, 149 52, 145 57 C135 73, 120 91, 102 107 C88 100, 82 89, 86 86 Z' fill='%23FFFFFF'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23C8102E'/%3E%3Cpath d='M78 28 C64 34, 46 44, 30 52 C22 56, 17 61, 24 64 C32 67, 44 63, 58 56 C52 64, 42 74, 33 80 C27 84, 25 87, 32 87 C44 87, 60 74, 72 61 C82 50, 89 36, 88 30 C87 26, 83 26, 78 28 Z' fill='%23FFFFFF'/%3E%3C/svg%3E">
+
+  <!-- Embedded Web App Manifest for True Standalone Fullscreen Installation -->
+  <link rel="manifest" id="manifest-placeholder">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -34,8 +41,8 @@
               red: '#C8102E',
               crimson: '#A60D26',
               darkRed: '#780B1C',
-              nightBg: '#080D1A',
-              nightCard: '#0F172A',
+              nightBg: '#070B14',
+              nightCard: '#0E1726',
               nightBorder: '#1E293B',
               ecamGreen: '#00E676',
               ecamCyan: '#00E5FF',
@@ -61,12 +68,16 @@
   </script>
 
   <style>
-    /* Fullscreen Safe Area Insets for Notch and Home Indicator */
+    /* Fullscreen Safe Area Insets for Notch, Status bar & Home Bar */
     :root {
       --sat: env(safe-area-inset-top, 0px);
       --sab: env(safe-area-inset-bottom, 0px);
       --sal: env(safe-area-inset-left, 0px);
       --sar: env(safe-area-inset-right, 0px);
+    }
+    html, body {
+      height: 100%;
+      overscroll-behavior-y: none;
     }
     body {
       padding-top: var(--sat);
@@ -78,17 +89,10 @@
       -webkit-user-select: none;
     }
 
-    /* Modern Glass Cockpit styling */
     .efb-glass {
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
-
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    .dark ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
 
     /* Active Airbus Item Highlighting */
     @keyframes ecamPulseHighlight {
@@ -97,20 +101,20 @@
         box-shadow: 0 0 16px rgba(0, 230, 118, 0.3);
       }
       50% {
-        border-color: rgba(0, 230, 118, 0.35);
-        box-shadow: 0 0 4px rgba(0, 230, 118, 0.1);
+        border-color: rgba(0, 230, 118, 0.3);
+        box-shadow: 0 0 4px rgba(0, 230, 118, 0.08);
       }
     }
     .active-item-glow {
       animation: ecamPulseHighlight 2s infinite ease-in-out;
     }
 
-    /* Below The Line Caution Striped Pattern */
+    /* Below The Line Warning Stripes */
     .below-line-stripe {
       background: repeating-linear-gradient(
         -45deg,
-        rgba(255, 179, 0, 0.12),
-        rgba(255, 179, 0, 0.12) 12px,
+        rgba(255, 179, 0, 0.14),
+        rgba(255, 179, 0, 0.14) 12px,
         rgba(255, 179, 0, 0.03) 12px,
         rgba(255, 179, 0, 0.03) 24px
       );
@@ -121,13 +125,13 @@
 
   <!-- AVIONICS TOP BAR -->
   <header class="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-thy-nightBorder bg-white/95 dark:bg-thy-nightBg/95 efb-glass shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-3">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-2 sm:gap-4">
       
       <!-- Brand & Aircraft Type -->
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2.5 sm:gap-3">
         <!-- Turkish Airlines Official Emblem (Wild Goose Roundel) -->
-        <div class="w-11 h-11 rounded-full bg-thy-red flex items-center justify-center shadow-lg shadow-red-600/30 shrink-0 border border-white/20">
-          <svg class="w-7 h-7 text-white" viewBox="0 0 100 100" fill="currentColor">
+        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-thy-red flex items-center justify-center shadow-lg shadow-red-600/30 shrink-0 border border-white/20">
+          <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white" viewBox="0 0 100 100" fill="currentColor">
             <circle cx="50" cy="50" r="48" fill="#C8102E" />
             <path d="M78 28 C64 34, 46 44, 30 52 C22 56, 17 61, 24 64 C32 67, 44 63, 58 56 C52 64, 42 74, 33 80 C27 84, 25 87, 32 87 C44 87, 60 74, 72 61 C82 50, 89 36, 88 30 C87 26, 83 26, 78 28 Z" fill="#FFFFFF"/>
             <path d="M49 46 C59 38, 70 31, 79 26 C82 25, 84 27, 82 30 C76 39, 68 49, 58 58 C50 54, 47 48, 49 46 Z" fill="#FFFFFF"/>
@@ -136,60 +140,94 @@
 
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="font-display font-extrabold tracking-tight text-sm sm:text-base text-slate-900 dark:text-white leading-none">
+            <h1 class="font-display font-extrabold tracking-tight text-xs sm:text-base text-slate-900 dark:text-white leading-none">
               TURKISH AIRLINES
             </h1>
-            <span class="text-[10px] font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-red-100 dark:bg-red-950/80 text-thy-red border border-red-200 dark:border-red-900">
+            <span class="text-[9px] sm:text-[10px] font-mono font-bold tracking-wider px-1.5 py-0.5 rounded bg-red-100 dark:bg-red-950/80 text-thy-red border border-red-200 dark:border-red-900">
               A321neo SOP
             </span>
           </div>
-          <p class="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-0.5">FLIGHT CREW OPERATING MANUAL • EFB CHECKLIST</p>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span id="standalone-badge" class="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-mono font-bold text-amber-500 bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.2 rounded">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+              <span id="standalone-badge-text">TARAYICI MODU</span>
+            </span>
+            <span class="hidden md:inline text-[11px] font-mono text-slate-500 dark:text-slate-400">FLIGHT CREW OPERATING MANUAL • EFB</span>
+          </div>
         </div>
       </div>
 
-      <!-- Cockpit Utilities -->
-      <div class="flex items-center gap-2">
+      <!-- Cockpit Utilities & Standalone Installation Button -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <!-- Standalone / Fullscreen Trigger Button -->
+        <button id="btn-install-standalone" title="Uygulamayı Cihaza Yükle / Tam Ekran Aç" class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl border border-red-500 bg-thy-red text-white hover:bg-red-600 transition flex items-center gap-1.5 text-xs font-mono font-bold shadow-md shadow-red-500/20 active:scale-95">
+          <i id="install-btn-icon" class="fa-solid fa-download text-xs"></i>
+          <span id="install-btn-text" class="hidden xs:inline sm:inline">APLIKASYON YÜKLE</span>
+        </button>
+
+        <!-- Native Fullscreen Force Toggle -->
+        <button id="btn-toggle-fullscreen" title="Tam Ekran Modunu Aç/Kapat" class="p-2 sm:px-2.5 sm:py-2 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-slate-300 hover:border-thy-red transition flex items-center gap-1 text-xs font-mono">
+          <i id="fs-icon" class="fa-solid fa-expand text-slate-600 dark:text-slate-300"></i>
+          <span class="hidden lg:inline">TAM EKRAN</span>
+        </button>
+
         <!-- Chime Audio Toggle -->
-        <button id="btn-audio-toggle" title="Kokpit Ses İkazı" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-slate-300 hover:border-thy-red transition flex items-center gap-1.5 text-xs font-mono shadow-sm">
+        <button id="btn-audio-toggle" title="Kokpit Ses İkazı" class="p-2 sm:px-2.5 sm:py-2 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-slate-300 hover:border-thy-red transition flex items-center gap-1.5 text-xs font-mono">
           <i id="audio-icon" class="fa-solid fa-volume-high text-emerald-500"></i>
-          <span class="hidden md:inline" id="audio-label">SES AÇIK</span>
+          <span class="hidden xl:inline" id="audio-label">SES</span>
         </button>
 
         <!-- Current Phase Reset -->
-        <button id="btn-reset-current" title="Mevcut Fazı Sıfırla" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-slate-300 hover:border-amber-500 transition flex items-center gap-1.5 text-xs font-mono shadow-sm">
+        <button id="btn-reset-current" title="Mevcut Fazı Sıfırla" class="p-2 sm:px-2.5 sm:py-2 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-slate-300 hover:border-amber-500 transition flex items-center gap-1.5 text-xs font-mono">
           <i class="fa-solid fa-rotate-left text-amber-500"></i>
-          <span class="hidden sm:inline">FAZI SIFIRLA</span>
+          <span class="hidden xl:inline">SIFIRLA</span>
         </button>
 
         <!-- Day / Night Vision Toggle -->
-        <button id="theme-toggle" title="Gündüz / Gece Görüşü" class="p-2.5 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition shadow-sm">
-          <i id="theme-toggle-icon" class="fa-solid fa-sun text-sm"></i>
+        <button id="theme-toggle" title="Gündüz / Gece Görüşü" class="p-2 sm:p-2.5 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+          <i id="theme-toggle-icon" class="fa-solid fa-sun text-xs sm:text-sm"></i>
         </button>
       </div>
 
     </div>
   </header>
 
+  <!-- STANDALONE CALLOUT BANNER (Appears if running in standard browser) -->
+  <div id="standalone-alert-banner" class="bg-gradient-to-r from-red-900/90 via-slate-900/90 to-red-900/90 border-b border-red-500/40 px-4 py-2 text-white text-xs font-mono flex items-center justify-between gap-3 shadow-inner">
+    <div class="flex items-center gap-2 overflow-hidden">
+      <i class="fa-solid fa-mobile-screen-button text-thy-ecamAmber animate-bounce"></i>
+      <span class="truncate">Tam ekran & yerel aplikasyon deneyimi için uygulamayı ana ekranınıza ekleyin veya tam ekranı başlatın.</span>
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+      <button id="banner-action-btn" class="bg-thy-red hover:bg-red-600 px-3 py-1 rounded-lg text-[11px] font-bold tracking-wider transition">
+        NASIL YAPILIR?
+      </button>
+      <button id="banner-close-btn" class="text-slate-400 hover:text-white text-xs px-1">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+
   <!-- ECAM STATUS STRIP -->
-  <section class="bg-slate-100/90 dark:bg-[#0A101D] border-b border-slate-200 dark:border-thy-nightBorder/90 py-2.5 px-4 sm:px-8">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+  <section class="bg-slate-100/90 dark:bg-[#0A101D] border-b border-slate-200 dark:border-thy-nightBorder/90 py-2 sm:py-2.5 px-4 sm:px-8">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3">
       
       <!-- Phase Info & ECAM Memo Indicator -->
       <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
-        <div class="flex items-center gap-2.5">
-          <span id="phase-pill" class="w-2.5 h-2.5 rounded-full bg-thy-ecamGreen animate-pulse shadow-glow-green"></span>
-          <span id="active-phase-name" class="font-mono text-xs sm:text-sm font-bold text-slate-900 dark:text-white tracking-wider uppercase">
+        <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+          <span id="phase-pill" class="w-2.5 h-2.5 rounded-full bg-thy-ecamGreen animate-pulse shadow-glow-green shrink-0"></span>
+          <span id="active-phase-name" class="font-mono text-xs sm:text-sm font-bold text-slate-900 dark:text-white tracking-wider uppercase truncate">
             BEFORE START CHECKLIST
           </span>
         </div>
-        <span id="sub-status-memo" class="text-[10px] font-mono font-bold text-thy-ecamGreen border border-emerald-500/40 px-2.5 py-0.5 rounded bg-emerald-500/10 tracking-widest">
+        <span id="sub-status-memo" class="text-[9px] sm:text-[10px] font-mono font-bold text-thy-ecamGreen border border-emerald-500/40 px-2 py-0.5 rounded bg-emerald-500/10 tracking-widest shrink-0">
           ECAM NORMAL
         </span>
       </div>
 
       <!-- Completion Counter & Dynamic Progress -->
-      <div class="flex items-center gap-4 w-full sm:w-auto justify-end">
-        <div class="w-36 sm:w-56 bg-slate-200 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
+      <div class="flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-end">
+        <div class="w-28 sm:w-56 bg-slate-200 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
           <div id="phase-progress-bar" class="bg-thy-red h-full rounded-full transition-all duration-300 shadow-glow-red" style="width: 0%;"></div>
         </div>
         <div class="font-mono text-xs font-bold text-slate-600 dark:text-slate-300 whitespace-nowrap">
@@ -201,10 +239,10 @@
   </section>
 
   <!-- MAIN FLIGHT DECK WORKSPACE -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-6 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
 
     <!-- LEFT SIDEBAR: Flight Phases Selector (4 Cols) -->
-    <aside class="lg:col-span-4 rounded-2xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard p-4 shadow-sm">
+    <aside class="lg:col-span-4 rounded-2xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard p-3 sm:p-4 shadow-sm">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-3">
         <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-2">
           <i class="fa-solid fa-plane-departure text-thy-red"></i>
@@ -215,22 +253,22 @@
         </button>
       </div>
 
-      <nav id="phases-nav" class="space-y-1.5 overflow-y-auto max-h-[calc(100vh-250px)] pr-1">
+      <nav id="phases-nav" class="space-y-1 sm:space-y-1.5 overflow-y-auto max-h-[calc(100vh-280px)] pr-1">
         <!-- Dynamically injected phases -->
       </nav>
     </aside>
 
-    <!-- RIGHT PANEL: Current Checklist & Giant OK Button (8 Cols) -->
-    <div class="lg:col-span-8 space-y-4">
+    <!-- RIGHT PANEL: Current Checklist & Master OK Button (8 Cols) -->
+    <div class="lg:col-span-8 space-y-3 sm:space-y-4">
       
       <!-- Phase Header Card with Hero OK Button -->
-      <div class="rounded-2xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="rounded-2xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <div class="flex items-center gap-2.5 mb-1 flex-wrap">
-            <span id="header-phase-badge" class="px-2.5 py-0.5 rounded-md bg-thy-red text-white font-mono font-bold text-xs tracking-wider">
+          <div class="flex items-center gap-2 sm:gap-2.5 mb-1 flex-wrap">
+            <span id="header-phase-badge" class="px-2 py-0.5 rounded-md bg-thy-red text-white font-mono font-bold text-xs tracking-wider">
               PHASE 1/10
             </span>
-            <h2 id="header-phase-title" class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 dark:text-white">
+            <h2 id="header-phase-title" class="font-display font-extrabold text-lg sm:text-2xl text-slate-900 dark:text-white">
               BEFORE START CHECKLIST
             </h2>
           </div>
@@ -240,7 +278,7 @@
         </div>
 
         <!-- Master OK / CHECK Action Button -->
-        <button id="btn-action-ok" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-mono font-extrabold text-sm sm:text-base tracking-widest shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 active:scale-95 transition flex items-center justify-center gap-2.5 shrink-0">
+        <button id="btn-action-ok" class="w-full sm:w-auto px-6 sm:px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-mono font-extrabold text-sm sm:text-base tracking-widest shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 active:scale-95 transition flex items-center justify-center gap-2.5 shrink-0">
           <i class="fa-solid fa-check-double text-lg"></i>
           <span id="btn-action-label">OK / CHECK</span>
           <span class="text-[10px] px-1.5 py-0.5 rounded bg-black/25 text-emerald-100 font-mono font-normal hidden md:inline">SPACE</span>
@@ -248,7 +286,7 @@
       </div>
 
       <!-- Checklist Challenge & Response Items Container -->
-      <div id="checklist-items-container" class="space-y-3">
+      <div id="checklist-items-container" class="space-y-2.5 sm:space-y-3">
         <!-- Dynamically rendered checklist items -->
       </div>
 
@@ -270,14 +308,14 @@
 
       <!-- Pilot Quick Reference Footer -->
       <div class="flex flex-wrap items-center justify-between gap-2 p-3 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-500 dark:text-slate-400">
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5">
           <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-[10px] text-slate-700 dark:text-slate-200">SPACE</kbd>
-          <span>veya</span>
+          <span>/</span>
           <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-[10px] text-slate-700 dark:text-slate-200">ENTER</kbd>
           <span>: Sıradaki Maddeyi Doğrula</span>
         </div>
         <div>
-          <span>THY Flight Operations • A321 NEO Fleet</span>
+          <span>THY Flight Deck Operations • A321 NEO Fleet</span>
         </div>
       </div>
 
@@ -285,12 +323,151 @@
 
   </main>
 
+  <!-- INSTALL / STANDALONE GUIDANCE MODAL -->
+  <div id="install-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-200">
+    <div class="bg-white dark:bg-thy-nightCard border border-slate-300 dark:border-thy-nightBorder rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-5 text-slate-800 dark:text-slate-100">
+      
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-full bg-thy-red flex items-center justify-center text-white text-sm font-bold">
+            <i class="fa-solid fa-cloud-arrow-down"></i>
+          </div>
+          <div>
+            <h3 class="font-display font-extrabold text-base sm:text-lg text-slate-900 dark:text-white">
+              A321 NEO Standalone Kurulumu
+            </h3>
+            <p class="text-[11px] font-mono text-slate-500 dark:text-slate-400">Tarayıcı çubuğu olmadan tam ekran EFB aplikasyonu</p>
+          </div>
+        </div>
+        <button id="close-modal-btn" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-white rounded-lg">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Instruction Tabs / Context -->
+      <div class="space-y-4 text-xs font-mono">
+        <!-- Direct Fullscreen Test Button -->
+        <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
+          <div class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-expand text-thy-red"></i>
+            <span>Hızlı Çözüm: Anında Tam Ekran Yap</span>
+          </div>
+          <p class="text-slate-600 dark:text-slate-400 text-[11px]">
+            Cihazınızda hemen adres çubuklarını gizleyerek tam ekran kokpit ekranını başlatmak için dokunun:
+          </p>
+          <button id="btn-modal-force-fullscreen" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center justify-center gap-2">
+            <i class="fa-solid fa-arrows-maximize"></i> TAM EKRANI BAŞLAT
+          </button>
+        </div>
+
+        <!-- iOS Instructions -->
+        <div class="p-3.5 rounded-xl bg-sky-500/10 border border-sky-500/30 space-y-2">
+          <div class="font-bold text-sky-600 dark:text-sky-400 flex items-center gap-2">
+            <i class="fa-brands fa-apple text-base"></i>
+            <span>Apple iPhone & iPad (Safari)</span>
+          </div>
+          <ol class="list-decimal list-inside space-y-1.5 text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">
+            <li>Safari alt çubuğundaki <strong>Paylaş</strong> (<i class="fa-solid fa-arrow-up-from-bracket"></i>) simgesine dokunun.</li>
+            <li>Aşağı kaydırıp <strong>"Ana Ekrana Ekle" (Add to Home Screen)</strong> seçeneğine dokunun.</li>
+            <li>Sağ üstteki <strong>"Ekle"</strong>ye dokunun.</li>
+            <li>Ana ekrandaki <strong>THY A321</strong> simgesinden açtığınızda URL barı olmadan %100 yerel bir aplikasyon olarak başlar.</li>
+          </ol>
+        </div>
+
+        <!-- Android Instructions -->
+        <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-2">
+          <div class="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
+            <i class="fa-brands fa-android text-base"></i>
+            <span>Android (Chrome & Edge)</span>
+          </div>
+          <p class="text-slate-600 dark:text-slate-300 text-[11px]">
+            Aşağıdaki <strong>"Uygulamayı Cihaza Yükle"</strong> butonuna dokunarak doğrudan Android APK benzeri bağımsız PWA olarak yükleyebilirsiniz.
+          </p>
+          <button id="btn-native-pwa-install" class="w-full py-2.5 rounded-xl bg-thy-red hover:bg-red-600 text-white font-bold flex items-center justify-center gap-2">
+            <i class="fa-solid fa-download"></i> UYGULAMAYI CİHAZA YÜKLE
+          </button>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button id="btn-modal-dismiss" class="px-5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-mono font-bold">
+          ANLADIM / KAPAT
+        </button>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Toast Notification Stack -->
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
   <script>
     /* =========================================================
-       AIRBUS A321 NEO TURKISH AIRLINES CHECKLIST DATABASE
+       DYNAMIC WEB APP MANIFEST & EMBEDDED SERVICE WORKER (PWA)
+       ========================================================= */
+    (function initPWAEnvironment() {
+      // 1. Dynamic Web App Manifest Blob with 'standalone' display mode
+      const manifestData = {
+        name: "Turkish Airlines A321 NEO Checklist",
+        short_name: "THY A321",
+        description: "Airbus A321 NEO Electronic Flight Bag Checklist for Turkish Airlines Flight Crew",
+        start_url: window.location.href,
+        display: "standalone",
+        display_override: ["fullscreen", "standalone", "window-controls-overlay"],
+        background_color: "#070B14",
+        theme_color: "#C8102E",
+        orientation: "any",
+        scope: "./",
+        icons: [
+          {
+            src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23C8102E'/%3E%3Cpath d='M146 56 C120 68, 86 86, 56 102 C42 109, 34 118, 46 124 C60 129, 84 122, 110 108 C99 124, 80 144, 62 156 C52 163, 48 170, 60 170 C84 170, 114 144, 138 120 C156 98, 168 72, 166 60 C164 53, 156 53, 146 56 Z' fill='%23FFFFFF'/%3E%3C/svg%3E",
+            sizes: "192x192",
+            type: "image/svg+xml",
+            purpose: "any maskable"
+          },
+          {
+            src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23C8102E'/%3E%3Cpath d='M390 150 C320 182, 230 230, 150 272 C112 291, 90 315, 122 331 C160 344, 224 325, 294 288 C264 331, 214 384, 166 416 C138 435, 128 453, 160 453 C224 453, 304 384, 368 320 C416 261, 448 192, 442 160 C438 141, 416 141, 390 150 Z' fill='%23FFFFFF'/%3E%3C/svg%3E",
+            sizes: "512x512",
+            type: "image/svg+xml",
+            purpose: "any maskable"
+          }
+        ]
+      };
+
+      const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+      const manifestURL = URL.createObjectURL(manifestBlob);
+      const manifestEl = document.getElementById('manifest-placeholder');
+      if (manifestEl) {
+        manifestEl.setAttribute('href', manifestURL);
+      }
+
+      // 2. Register Inline Service Worker to satisfy PWA installation criteria
+      if ('serviceWorker' in navigator) {
+        const swCode = `
+          const CACHE_NAME = 'thy-a321-efb-v1';
+          self.addEventListener('install', (e) => {
+            self.skipWaiting();
+          });
+          self.addEventListener('activate', (e) => {
+            e.waitUntil(self.clients.claim());
+          });
+          self.addEventListener('fetch', (e) => {
+            // Passthrough for dynamic iframe / sandbox preview compatibility
+            e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+          });
+        `;
+        const swBlob = new Blob([swCode], { type: 'application/javascript' });
+        const swURL = URL.createObjectURL(swBlob);
+        navigator.serviceWorker.register(swURL, { scope: './' })
+          .then(() => console.log('PWA Service Worker online'))
+          .catch(err => console.log('SW registration fallback mode active', err));
+      }
+    })();
+  </script>
+
+  <script>
+    /* =========================================================
+       AIRBUS A321 NEO CHECKLIST MASTER DATABASE (THY SOP)
        ========================================================= */
     const CHECKLIST_DATA = [
       {
@@ -496,11 +673,39 @@
       }
     ];
 
+    /* Application State */
     let currentPhaseIndex = 0;
     let checkedState = {};
     let variableInputs = {};
     let soundEnabled = true;
+    let deferredPrompt = null;
 
+    /* Check if currently running in Standalone mode */
+    function checkIsStandalone() {
+      return window.matchMedia('(display-mode: standalone)').matches ||
+             window.navigator.standalone === true ||
+             document.referrer.includes('android-app://');
+    }
+
+    function updateStandaloneUI() {
+      const isStandalone = checkIsStandalone();
+      const badgeText = document.getElementById('standalone-badge-text');
+      const badge = document.getElementById('standalone-badge');
+      const banner = document.getElementById('standalone-alert-banner');
+      const installBtnText = document.getElementById('install-btn-text');
+
+      if (isStandalone) {
+        badgeText.innerText = 'STANDALONE / EFB AKTİF';
+        badge.className = 'inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-1.5 py-0.5 rounded';
+        banner.classList.add('hidden');
+        installBtnText.innerText = 'TAM EKRAN';
+      } else {
+        badgeText.innerText = 'TARAYICI MODU';
+        badge.className = 'inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-mono font-bold text-amber-500 bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.5 rounded';
+      }
+    }
+
+    /* Local Storage Management */
     function initState() {
       try {
         const savedChecked = localStorage.getItem('thy_a321_checked_items');
@@ -519,7 +724,7 @@
           currentPhaseIndex = parseInt(savedPhase, 10) || 0;
         }
       } catch (e) {
-        console.warn('LocalStorage access warning', e);
+        console.warn('LocalStorage error:', e);
       }
 
       CHECKLIST_DATA.forEach(p => {
@@ -544,7 +749,7 @@
         localStorage.setItem('thy_a321_vars', JSON.stringify(variableInputs));
         localStorage.setItem('thy_a321_active_phase', currentPhaseIndex.toString());
       } catch (e) {
-        console.warn('Storage save failed', e);
+        console.warn('Save failed:', e);
       }
     }
 
@@ -574,7 +779,6 @@
         gain.connect(ctx.destination);
 
         if (type === 'check') {
-          // Dual pitch Airbus confirmation chime
           osc.type = 'sine';
           osc.frequency.setValueAtTime(880, now);
           osc.frequency.exponentialRampToValueAtTime(1320, now + 0.08);
@@ -583,7 +787,6 @@
           osc.start(now);
           osc.stop(now + 0.12);
         } else if (type === 'complete') {
-          // ECAM Harmonic Triad Chime
           [587.33, 880, 1174.66].forEach(freq => {
             const chordOsc = ctx.createOscillator();
             const chordGain = ctx.createGain();
@@ -599,13 +802,13 @@
         } else if (type === 'click') {
           osc.type = 'triangle';
           osc.frequency.setValueAtTime(440, now);
-          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.setValueAtTime(0.04, now);
           gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
           osc.start(now);
           osc.stop(now + 0.04);
         }
       } catch (err) {
-        console.warn('Audio synthesis warning', err);
+        console.warn('Audio warning:', err);
       }
     }
 
@@ -630,6 +833,18 @@
     const themeToggleBtn = document.getElementById('theme-toggle');
     const themeToggleIcon = document.getElementById('theme-toggle-icon');
 
+    // Standalone & Fullscreen Controls
+    const btnInstallStandalone = document.getElementById('btn-install-standalone');
+    const btnToggleFullscreen = document.getElementById('btn-toggle-fullscreen');
+    const installModal = document.getElementById('install-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const btnModalDismiss = document.getElementById('btn-modal-dismiss');
+    const btnModalForceFullscreen = document.getElementById('btn-modal-force-fullscreen');
+    const btnNativePwaInstall = document.getElementById('btn-native-pwa-install');
+    const bannerActionBtn = document.getElementById('banner-action-btn');
+    const bannerCloseBtn = document.getElementById('banner-close-btn');
+    const standaloneAlertBanner = document.getElementById('standalone-alert-banner');
+
     function renderPhasesSidebar() {
       phasesNav.innerHTML = '';
 
@@ -640,7 +855,7 @@
         const isFinished = totalItems > 0 && checkedCount === totalItems;
 
         const navBtn = document.createElement('button');
-        navBtn.className = `w-full text-left p-3 rounded-xl border transition-all duration-200 flex items-center justify-between gap-2 group ${
+        navBtn.className = `w-full text-left p-2.5 sm:p-3 rounded-xl border transition-all duration-200 flex items-center justify-between gap-2 group ${
           isCurrent
             ? 'border-thy-red bg-red-500/10 dark:bg-red-950/40 text-slate-900 dark:text-white shadow-sm'
             : isFinished
@@ -654,8 +869,8 @@
         };
 
         navBtn.innerHTML = `
-          <div class="flex items-center gap-2.5 min-w-0">
-            <span class="w-6 h-6 rounded-lg text-xs font-mono font-bold flex items-center justify-center shrink-0 ${
+          <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+            <span class="w-5 h-5 sm:w-6 sm:h-6 rounded-lg text-xs font-mono font-bold flex items-center justify-center shrink-0 ${
               isFinished 
                 ? 'bg-emerald-500 text-white' 
                 : isCurrent 
@@ -669,7 +884,7 @@
             </span>
           </div>
 
-          <div class="flex items-center gap-1.5 shrink-0">
+          <div class="flex items-center gap-1 shrink-0">
             <span class="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded ${
               isFinished 
                 ? 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300' 
@@ -723,10 +938,9 @@
       let actionableCounter = 0;
 
       currentPhase.items.forEach((item, itemIdx) => {
-        // Below The Line Divider
         if (item.type === 'separator') {
           const sepDiv = document.createElement('div');
-          sepDiv.className = 'my-4 p-3 rounded-xl border border-amber-500/40 below-line-stripe flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left';
+          sepDiv.className = 'my-3 sm:my-4 p-3 rounded-xl border border-amber-500/40 below-line-stripe flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left';
           sepDiv.innerHTML = `
             <div class="flex items-center gap-2">
               <i class="fa-solid fa-triangle-exclamation text-amber-500 text-sm animate-pulse"></i>
@@ -745,7 +959,6 @@
         actionableCounter++;
 
         const card = document.createElement('div');
-        
         let borderClasses = 'border-slate-200 dark:border-slate-800 bg-white dark:bg-thy-nightCard';
         if (isChecked) {
           borderClasses = 'border-emerald-500/30 bg-emerald-500/5 dark:bg-emerald-950/15 opacity-90';
@@ -753,23 +966,23 @@
           borderClasses = 'border-emerald-500 dark:border-emerald-400 bg-emerald-500/10 dark:bg-emerald-950/30 active-item-glow shadow-md';
         }
 
-        card.className = `rounded-2xl p-4 border transition-all duration-200 ${borderClasses} flex flex-col sm:flex-row sm:items-center justify-between gap-3`;
+        card.className = `rounded-2xl p-3 sm:p-4 border transition-all duration-200 ${borderClasses} flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3`;
 
-        // Left Challenge Column
+        // Left challenge
         const leftBox = document.createElement('div');
-        leftBox.className = 'flex items-start sm:items-center gap-3.5 flex-1';
+        leftBox.className = 'flex items-start sm:items-center gap-2.5 sm:gap-3.5 flex-1';
 
         const checkIconBtn = document.createElement('button');
         checkIconBtn.type = 'button';
         checkIconBtn.title = isChecked ? 'İşareti Kaldır' : 'Maddeni Doğrula';
-        checkIconBtn.className = `w-8 h-8 rounded-xl flex items-center justify-center font-mono text-xs font-bold transition-transform shrink-0 ${
+        checkIconBtn.className = `w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center font-mono text-xs font-bold transition-transform shrink-0 ${
           isChecked 
             ? 'bg-emerald-500 text-white shadow-glow-green scale-100' 
             : isActiveTarget 
               ? 'bg-emerald-500/20 text-emerald-500 border-2 border-emerald-500' 
               : 'border border-slate-300 dark:border-slate-700 text-slate-400 hover:border-slate-400'
         }`;
-        checkIconBtn.innerHTML = isChecked ? '<i class="fa-solid fa-check text-sm"></i>' : actionableCounter;
+        checkIconBtn.innerHTML = isChecked ? '<i class="fa-solid fa-check text-xs"></i>' : actionableCounter;
         checkIconBtn.onclick = () => toggleCheckItem(item.id);
 
         leftBox.appendChild(checkIconBtn);
@@ -778,28 +991,28 @@
         infoDiv.className = 'flex-1';
         infoDiv.innerHTML = `
           <div class="flex items-center gap-2 flex-wrap">
-            <span class="font-mono text-sm sm:text-base font-bold tracking-tight ${isChecked ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'}">
+            <span class="font-mono text-xs sm:text-sm md:text-base font-bold tracking-tight ${isChecked ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'}">
               ${item.challenge}
             </span>
-            ${isActiveTarget ? '<span class="px-2 py-0.5 text-[9px] font-mono font-bold tracking-widest bg-emerald-500 text-white rounded uppercase animate-pulse">SIRADAKİ</span>' : ''}
+            ${isActiveTarget ? '<span class="px-1.5 py-0.2 text-[8px] sm:text-[9px] font-mono font-bold tracking-widest bg-emerald-500 text-white rounded uppercase animate-pulse">SIRADAKİ</span>' : ''}
           </div>
-          ${item.note ? `<p class="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-0.5"><i class="fa-solid fa-circle-info mr-1 text-sky-500"></i>${item.note}</p>` : ''}
+          ${item.note ? `<p class="text-[10px] sm:text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-0.5"><i class="fa-solid fa-circle-info mr-1 text-sky-500"></i>${item.note}</p>` : ''}
         `;
         leftBox.appendChild(infoDiv);
 
-        // Right Response Column
+        // Right response
         const rightBox = document.createElement('div');
-        rightBox.className = 'flex items-center justify-between sm:justify-end gap-3 pl-11 sm:pl-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-slate-800/80';
+        rightBox.className = 'flex items-center justify-between sm:justify-end gap-2.5 sm:gap-3 pl-9 sm:pl-0 pt-1.5 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-slate-800/80';
 
         if (item.type === 'variable') {
           const inputWrapper = document.createElement('div');
-          inputWrapper.className = 'flex items-center gap-2';
+          inputWrapper.className = 'flex items-center gap-1.5';
           const currentVal = variableInputs[item.id] !== undefined ? variableInputs[item.id] : item.defaultVal;
 
           inputWrapper.innerHTML = `
             <div class="relative flex items-center">
-              <input type="text" id="input-${item.id}" value="${currentVal}" placeholder="Değer" class="w-24 sm:w-28 px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-thy-ecamCyan font-mono font-bold text-xs focus:ring-2 focus:ring-thy-red/40 focus:border-thy-red outline-none text-center">
-              <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400 ml-2">${item.unit || ''}</span>
+              <input type="text" id="input-${item.id}" value="${currentVal}" placeholder="Değer" class="w-20 sm:w-28 px-2 py-1 sm:py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-thy-ecamCyan font-mono font-bold text-xs focus:ring-2 focus:ring-thy-red/40 focus:border-thy-red outline-none text-center">
+              <span class="text-[10px] sm:text-[11px] font-mono text-slate-500 dark:text-slate-400 ml-1.5">${item.unit || ''}</span>
             </div>
           `;
 
@@ -824,7 +1037,7 @@
 
         const okRowBtn = document.createElement('button');
         okRowBtn.type = 'button';
-        okRowBtn.className = `px-3.5 py-1.5 rounded-lg font-mono text-xs font-bold tracking-wider transition active:scale-95 ${
+        okRowBtn.className = `px-3 py-1.5 rounded-lg font-mono text-xs font-bold tracking-wider transition active:scale-95 ${
           isChecked
             ? 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'
             : isActiveTarget
@@ -845,6 +1058,7 @@
       });
 
       renderPhasesSidebar();
+      updateStandaloneUI();
     }
 
     function confirmCurrentActiveItem() {
@@ -933,7 +1147,7 @@
       confirmCurrentActiveItem();
     });
 
-    /* Keyboard Shortcuts (Space or Enter for quick pilot crosscheck) */
+    // Keyboard Shortcuts (Spacebar & Enter)
     window.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
         return;
@@ -944,7 +1158,7 @@
       }
     });
 
-    /* Audio Toggle */
+    // Audio Mute/Unmute
     btnAudioToggle.addEventListener('click', () => {
       soundEnabled = !soundEnabled;
       if (soundEnabled) {
@@ -959,7 +1173,86 @@
       }
     });
 
-    /* Day / Night Vision Cockpit Mode */
+    // Native Fullscreen Toggle API
+    function toggleNativeFullscreen() {
+      const doc = document.documentElement;
+      const fsIcon = document.getElementById('fs-icon');
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (doc.requestFullscreen) {
+          doc.requestFullscreen().catch(err => console.log('FS error:', err));
+        } else if (doc.webkitRequestFullscreen) {
+          doc.webkitRequestFullscreen();
+        }
+        if (fsIcon) fsIcon.className = 'fa-solid fa-compress text-thy-red';
+        showToast('Tam ekran açıldı', 'info');
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().catch(err => console.log('Exit FS error:', err));
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+        if (fsIcon) fsIcon.className = 'fa-solid fa-expand text-slate-400';
+      }
+    }
+
+    btnToggleFullscreen.addEventListener('click', toggleNativeFullscreen);
+    btnModalForceFullscreen.addEventListener('click', () => {
+      toggleNativeFullscreen();
+      hideInstallModal();
+    });
+
+    // Capture PWA Install Prompt for Android / Chrome / Edge
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtnText = document.getElementById('install-btn-text');
+      if (installBtnText) installBtnText.innerText = 'CİHAZA YÜKLE';
+      showToast('Uygulama cihazınıza kurulmaya hazır!', 'info');
+    });
+
+    // Handle App Installation Click
+    function triggerInstallOrGuide() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            showToast('A321 Checklist cihazınıza yükleniyor...', 'success');
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        // Show guidance modal for iOS or manual fullscreen
+        showInstallModal();
+      }
+    }
+
+    btnInstallStandalone.addEventListener('click', triggerInstallOrGuide);
+    btnNativePwaInstall.addEventListener('click', triggerInstallOrGuide);
+    bannerActionBtn.addEventListener('click', showInstallModal);
+    bannerCloseBtn.addEventListener('click', () => {
+      standaloneAlertBanner.classList.add('hidden');
+    });
+
+    function showInstallModal() {
+      installModal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        installModal.classList.remove('opacity-0');
+      });
+    }
+
+    function hideInstallModal() {
+      installModal.classList.add('opacity-0');
+      setTimeout(() => {
+        installModal.classList.add('hidden');
+      }, 200);
+    }
+
+    closeModalBtn.addEventListener('click', hideInstallModal);
+    btnModalDismiss.addEventListener('click', hideInstallModal);
+    installModal.addEventListener('click', (e) => {
+      if (e.target === installModal) hideInstallModal();
+    });
+
     function initTheme() {
       const savedTheme = localStorage.getItem('thy_theme_mode');
       if (savedTheme === 'light') {
@@ -990,7 +1283,6 @@
       }
     });
 
-    /* Pilot Toast Alerts */
     function showToast(message, type = 'info') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
@@ -1010,11 +1302,16 @@
       }, 2500);
     }
 
-    /* Bootstrapping */
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
       initState();
       renderActiveChecklist();
+      updateStandaloneUI();
+
+      // Listen for standalone display-mode changes
+      window.matchMedia('(display-mode: standalone)').addEventListener('change', () => {
+        updateStandaloneUI();
+      });
     });
   </script>
 </body>
