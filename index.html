@@ -1,575 +1,1512 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>THY A321 NEO EFB Checklist</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Airbus A321 NEO Checklist • Turkish Airlines</title>
+  
+  <!-- Standalone Mobile App Capabilities (iOS & Android PWA) -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="THY A321">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="THY A321 Checklist">
   <meta name="theme-color" content="#C8102E">
+  <meta name="msapplication-navbutton-color" content="#C8102E">
+  <meta name="msapplication-starturl" content="./">
+
+  <!-- Dynamic SVG App Icon Link -->
+  <link rel="apple-touch-icon" id="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23C8102E'/%3E%3Ccircle cx='90' cy='90' r='75' fill='none' stroke='rgba(255,255,255,0.2)' stroke-width='4'/%3E%3Cpath d='M136 54 C112 65, 80 82, 52 96 C38 103, 30 112, 42 118 C56 123, 78 116, 102 103 C92 118, 74 136, 58 147 C48 154, 44 160, 56 160 C78 160, 106 136, 128 113 C146 93, 158 68, 156 57 C154 50, 146 50, 136 54 Z' fill='%23FFFFFF'/%3E%3Cpath d='M86 86 C104 72, 124 59, 140 50 C145 48, 149 52, 145 57 C135 73, 120 91, 102 107 C88 100, 82 89, 86 86 Z' fill='%23FFFFFF'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23C8102E'/%3E%3Cpath d='M78 28 C64 34, 46 44, 30 52 C22 56, 17 61, 24 64 C32 67, 44 63, 58 56 C52 64, 42 74, 33 80 C27 84, 25 87, 32 87 C44 87, 60 74, 72 61 C82 50, 89 36, 88 30 C87 26, 83 26, 78 28 Z' fill='%23FFFFFF'/%3E%3C/svg%3E">
+
+  <!-- Embedded Web App Manifest -->
+  <link rel="manifest" id="manifest-placeholder">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Typography & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            thy: {
+              red: '#C8102E',
+              crimson: '#A60D26',
+              darkRed: '#780B1C',
+              nightBg: '#080D1A',
+              nightCard: '#0F172A',
+              nightBorder: '#1E293B',
+              ecamGreen: '#00E676',
+              ecamCyan: '#00E5FF',
+              ecamAmber: '#FFB300',
+              ecamRed: '#FF1744',
+              dayBg: '#F8FAFC',
+              dayCard: '#FFFFFF',
+              dayBorder: '#E2E8F0'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          boxShadow: {
+            'glow-red': '0 0 25px rgba(200, 16, 46, 0.45)',
+            'glow-green': '0 0 25px rgba(0, 230, 118, 0.35)',
+            'glow-cyan': '0 0 20px rgba(0, 229, 255, 0.3)',
+            'glow-amber': '0 0 25px rgba(255, 179, 0, 0.4)'
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
     :root {
-      --bg: #0d1117;
-      --card-bg: #161b22;
-      --border: #30363d;
-      --text: #c9d1d9;
-      --text-bright: #f0f6fc;
-      --thy-red: #C8102E;
-      --ecam-green: #00FF66;
-      --ecam-amber: #FFB000;
-      --ecam-cyan: #00E5FF;
-      --completed: #238636;
-      --highlight: #1f6feb;
+      --sat: env(safe-area-inset-top, 0px);
+      --sab: env(safe-area-inset-bottom, 0px);
+      --sal: env(safe-area-inset-left, 0px);
+      --sar: env(safe-area-inset-right, 0px);
     }
-    [data-theme="light"] {
-      --bg: #f4f6f8;
-      --card-bg: #ffffff;
-      --border: #d0d7de;
-      --text: #24292f;
-      --text-bright: #0969da;
-      --highlight: #0969da;
+    html, body {
+      height: 100%;
+      overscroll-behavior-y: none;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
-    }
-    header {
-      background: var(--thy-red);
-      color: #fff;
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      z-index: 10;
-    }
-    .header-left { display: flex; align-items: center; gap: 12px; }
-    .header-title h1 { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.5px; }
-    .header-title p { font-size: 0.75rem; opacity: 0.9; }
-    .header-actions { display: flex; gap: 8px; }
-    button.btn {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
-      color: #fff;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    button.btn:active { transform: scale(0.96); }
-    button.btn-warning { background: var(--ecam-amber); color: #000; border: none; }
-    button.btn-danger { background: #b62324; color: #fff; border: none; }
-
-    .nav-bar {
-      background: var(--card-bg);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      overflow-x: auto;
-      padding: 6px 12px;
-      gap: 6px;
-      scrollbar-width: none;
-    }
-    .nav-bar::-webkit-scrollbar { display: none; }
-    .nav-tab {
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      white-space: nowrap;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.02);
-      color: var(--text);
-    }
-    .nav-tab.active {
-      background: var(--highlight);
-      color: #fff;
-      border-color: var(--highlight);
-      font-weight: bold;
-    }
-    .nav-tab.done {
-      border-color: var(--ecam-green);
-      color: var(--ecam-green);
+      padding-top: var(--sat);
+      padding-bottom: var(--sab);
+      padding-left: var(--sal);
+      padding-right: var(--sar);
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
-    .main-container {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    .efb-glass {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
 
-    .banner-alert {
-      background: rgba(255, 176, 0, 0.15);
-      border: 1px solid var(--ecam-amber);
-      color: var(--ecam-amber);
-      padding: 10px;
-      border-radius: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.85rem;
-      font-weight: bold;
-      cursor: pointer;
-      animation: pulse 1.8s infinite;
+    @keyframes ecamPulseHighlight {
+      0%, 100% {
+        border-color: rgba(0, 230, 118, 0.95);
+        box-shadow: 0 0 16px rgba(0, 230, 118, 0.3);
+      }
+      50% {
+        border-color: rgba(0, 230, 118, 0.3);
+        box-shadow: 0 0 4px rgba(0, 230, 118, 0.08);
+      }
     }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .card-header {
-      background: rgba(255,255,255,0.03);
-      padding: 12px 16px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: var(--text-bright);
+    .active-item-glow {
+      animation: ecamPulseHighlight 2s infinite ease-in-out;
     }
 
-    .item-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: background 0.15s;
+    @keyframes cautionStrobe {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(0.99); }
     }
-    .item-row:last-child { border-bottom: none; }
-    .item-row:hover { background: rgba(255,255,255,0.03); }
-    .item-row.checked {
-      opacity: 0.55;
-    }
-    .item-title { font-weight: 600; display: flex; align-items: center; gap: 8px; }
-    .item-action {
-      color: var(--ecam-cyan);
-      font-family: monospace;
-      font-size: 0.95rem;
-      font-weight: bold;
-    }
-    .item-row.checked .item-action {
-      color: var(--ecam-green);
+    .strobe-caution {
+      animation: cautionStrobe 1.5s infinite ease-in-out;
     }
 
-    .divider-line {
-      background: repeating-linear-gradient(45deg, #2b2b10, #2b2b10 10px, #3d3b14 10px, #3d3b14 20px);
-      border: 1px solid var(--ecam-amber);
-      color: var(--ecam-amber);
-      text-align: center;
-      padding: 8px;
-      font-weight: bold;
-      font-size: 0.75rem;
-      letter-spacing: 1px;
-      margin: 8px 0;
+    .below-line-stripe {
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(255, 179, 0, 0.14),
+        rgba(255, 179, 0, 0.14) 12px,
+        rgba(255, 179, 0, 0.03) 12px,
+        rgba(255, 179, 0, 0.03) 24px
+      );
     }
 
-    footer {
-      background: var(--card-bg);
-      border-top: 1px solid var(--border);
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+    .emergency-stripe {
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(255, 23, 68, 0.18),
+        rgba(255, 23, 68, 0.18) 12px,
+        rgba(255, 23, 68, 0.04) 12px,
+        rgba(255, 23, 68, 0.04) 24px
+      );
     }
-    .primary-btn {
-      flex: 1;
-      background: var(--completed);
-      color: #fff;
-      border: none;
-      padding: 14px;
-      border-radius: 6px;
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-    }
-    .primary-btn:active { transform: scale(0.98); }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      z-index: 100;
-      padding: 20px;
-      overflow-y: auto;
-    }
-    .modal-content {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      max-width: 600px;
-      margin: 20px auto;
-      overflow: hidden;
-    }
-    .modal-header {
-      background: #b62324;
-      color: #fff;
-      padding: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: bold;
-    }
-    .modal-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
   </style>
 </head>
-<body>
+<body class="bg-thy-dayBg dark:bg-thy-nightBg text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans selection:bg-thy-red selection:text-white transition-colors duration-300 relative overflow-x-hidden">
 
-  <header>
-    <div class="header-left">
-      <div class="header-title">
-        <h1>TURKISH AIRLINES</h1>
-        <p>A321 NEO STANDARDIZED EFB CHECKLIST</p>
+  <header class="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-thy-nightBorder bg-white/95 dark:bg-thy-nightBg/95 efb-glass shadow-sm">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-2 sm:gap-4">
+      
+      <!-- Brand & Aircraft Type -->
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-thy-red flex items-center justify-center shadow-lg shadow-red-600/30 shrink-0 border border-white/20">
+          <svg class="w-6 h-6 sm:w-7 sm:h-7 text-white" viewBox="0 0 100 100" fill="currentColor">
+            <circle cx="50" cy="50" r="48" fill="#C8102E" />
+            <path d="M78 28 C64 34, 46 44, 30 52 C22 56, 17 61, 24 64 C32 67, 44 63, 58 56 C52 64, 42 74, 33 80 C27 84, 25 87, 32 87 C44 87, 60 74, 72 61 C82 50, 89 36, 88 30 C87 26, 83 26, 78 28 Z" fill="#FFFFFF"/>
+            <path d="M49 46 C59 38, 70 31, 79 26 C82 25, 84 27, 82 30 C76 39, 68 49, 58 58 C50 54, 47 48, 49 46 Z" fill="#FFFFFF"/>
+          </svg>
+        </div>
+
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-display font-extrabold tracking-tight text-xs sm:text-base text-slate-900 dark:text-white leading-none">
+              TURKISH AIRLINES
+            </h1>
+            <span class="text-[9px] sm:text-[10px] font-mono font-bold tracking-wider px-1.5 py-0.5 rounded bg-red-100 dark:bg-red-950/80 text-thy-red border border-red-200 dark:border-red-900">
+              A321neo SOP
+            </span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span id="standalone-badge" class="inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-mono font-bold text-amber-500 bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.2 rounded">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping"></span>
+              <span id="standalone-badge-text">TARAYICI MODU</span>
+            </span>
+            <span class="hidden md:inline text-[11px] font-mono text-slate-500 dark:text-slate-400">FLIGHT CREW OPERATING MANUAL • EFB</span>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="header-actions">
-      <button class="btn btn-warning" onclick="triggerGoAround()">🔄 GO-AROUND</button>
-      <button class="btn btn-danger" onclick="openFailures()">⚠️ FAILURES</button>
-      <button class="btn" onclick="toggleTheme()">☀️/🌙</button>
+
+      <!-- Cockpit Utilities & Quick Access Buttons -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <!-- Direct Go-Around Trigger -->
+        <button id="btn-quick-goaround" title="Go-Around (Pas Geçme) Prosedürünü Başlat" class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl border border-amber-500/80 bg-amber-500/10 hover:bg-amber-500 text-amber-600 dark:text-amber-400 hover:text-white transition flex items-center gap-1.5 text-xs font-mono font-bold active:scale-95">
+          <i class="fa-solid fa-arrows-rotate text-xs"></i>
+          <span class="hidden xs:inline sm:inline">GO-AROUND</span>
+        </button>
+
+        <!-- Failures / QRH Trigger Button -->
+        <button id="btn-open-failures" title="Sistem Arızaları ve QRH Listesi" class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl border border-red-500/80 bg-red-500/15 hover:bg-thy-red text-red-600 dark:text-red-400 hover:text-white transition flex items-center gap-1.5 text-xs font-mono font-bold active:scale-95 shadow-sm">
+          <i class="fa-solid fa-triangle-exclamation text-xs animate-pulse"></i>
+          <span class="hidden sm:inline">FAILURES (QRH)</span>
+        </button>
+
+        <!-- Standalone / Fullscreen Button -->
+        <button id="btn-install-standalone" title="Uygulamayı Cihaza Yükle / Tam Ekran Aç" class="p-2 sm:px-2.5 sm:py-2 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-slate-300 hover:border-thy-red transition flex items-center gap-1 text-xs font-mono">
+          <i id="install-btn-icon" class="fa-solid fa-download text-xs text-thy-red"></i>
+          <span id="install-btn-text" class="hidden xl:inline">YÜKLE</span>
+        </button>
+
+        <!-- Fullscreen Force Toggle -->
+        <button id="btn-toggle-fullscreen" title="Tam Ekran Aç/Kapat" class="p-2 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-slate-300 hover:border-thy-red transition">
+          <i id="fs-icon" class="fa-solid fa-expand text-xs"></i>
+        </button>
+
+        <!-- Chime Audio Toggle -->
+        <button id="btn-audio-toggle" title="Kokpit Ses İkazı" class="p-2 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-slate-300 hover:border-thy-red transition">
+          <i id="audio-icon" class="fa-solid fa-volume-high text-emerald-500 text-xs"></i>
+        </button>
+
+        <!-- Day / Night Vision Toggle -->
+        <button id="theme-toggle" title="Gündüz / Gece Görüşü" class="p-2 rounded-xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard text-slate-700 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+          <i id="theme-toggle-icon" class="fa-solid fa-sun text-xs"></i>
+        </button>
+      </div>
+
     </div>
   </header>
 
-  <nav class="nav-bar" id="phaseNav"></nav>
-
-  <main class="main-container" id="contentArea"></main>
-
-  <footer>
-    <button class="btn" onclick="resetCurrentPhase()">Sıfırla</button>
-    <button class="primary-btn" id="confirmBtn" onclick="confirmCurrentItem()">ONAYLA / CHECK</button>
-  </footer>
-
-  <div class="modal" id="failureModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <span>⚠️ QRH - KRİTİK ARIZA PROSEDÜRLERİ</span>
-        <button class="btn" onclick="closeFailures()">KAPAT</button>
-      </div>
-      <div class="modal-body" id="failureList"></div>
+  <div id="standalone-alert-banner" class="bg-gradient-to-r from-red-900/90 via-slate-900/90 to-red-900/90 border-b border-red-500/40 px-4 py-1.5 text-white text-xs font-mono flex items-center justify-between gap-3 shadow-inner">
+    <div class="flex items-center gap-2 overflow-hidden">
+      <i class="fa-solid fa-mobile-screen-button text-thy-ecamAmber animate-bounce"></i>
+      <span class="truncate">Tam ekran & yerel aplikasyon deneyimi için uygulamayı ana ekranınıza ekleyin veya tam ekranı başlatın.</span>
+    </div>
+    <div class="flex items-center gap-2 shrink-0">
+      <button id="banner-action-btn" class="bg-thy-red hover:bg-red-600 px-3 py-0.5 rounded-lg text-[11px] font-bold tracking-wider transition">
+        REHBER
+      </button>
+      <button id="banner-close-btn" class="text-slate-400 hover:text-white text-xs px-1">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
     </div>
   </div>
 
-  <script>
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    function playBeep(freq = 600, duration = 0.1) {
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + duration);
-    }
+  <section class="bg-slate-100/90 dark:bg-[#0A101D] border-b border-slate-200 dark:border-thy-nightBorder/90 py-2 sm:py-2.5 px-4 sm:px-8">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3">
+      
+      <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
+        <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+          <span id="phase-pill" class="w-2.5 h-2.5 rounded-full bg-thy-ecamGreen animate-pulse shadow-glow-green shrink-0"></span>
+          <span id="active-phase-name" class="font-mono text-xs sm:text-sm font-bold text-slate-900 dark:text-white tracking-wider uppercase truncate">
+            BEFORE START CHECKLIST
+          </span>
+        </div>
+        <span id="sub-status-memo" class="text-[9px] sm:text-[10px] font-mono font-bold text-thy-ecamGreen border border-emerald-500/40 px-2 py-0.5 rounded bg-emerald-500/10 tracking-widest shrink-0">
+          ECAM NORMAL
+        </span>
+      </div>
 
-    const checklistData = [
+      <div class="flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-end">
+        <div class="w-28 sm:w-56 bg-slate-200 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
+          <div id="phase-progress-bar" class="bg-thy-red h-full rounded-full transition-all duration-300 shadow-glow-red" style="width: 0%;"></div>
+        </div>
+        <div class="font-mono text-xs font-bold text-slate-600 dark:text-slate-300 whitespace-nowrap">
+          <span id="completed-count">0</span> / <span id="total-count">0</span> COMPLETED
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-6 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
+
+    <!-- LEFT SIDEBAR: Flight Phases Selector -->
+    <aside class="lg:col-span-4 rounded-2xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard p-3 sm:p-4 shadow-sm">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-3">
+        <span class="text-xs font-mono font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-2">
+          <i class="fa-solid fa-plane-departure text-thy-red"></i>
+          <span>UÇUŞ FAZLARI</span>
+        </span>
+        <button id="btn-reset-all" class="text-[10px] font-mono font-bold text-slate-400 hover:text-red-500 transition uppercase" title="Tüm Uçuş Kontrol Listesini Sıfırla">
+          TÜMÜNÜ SIFIRLA
+        </button>
+      </div>
+
+      <nav id="phases-nav" class="space-y-1 sm:space-y-1.5 overflow-y-auto max-h-[calc(100vh-280px)] pr-1">
+        <!-- Injected via JavaScript -->
+      </nav>
+    </aside>
+
+    <!-- RIGHT PANEL: Current Checklist & Master Actions -->
+    <div class="lg:col-span-8 space-y-3 sm:space-y-4">
+      
+      <!-- Go-Around Prompt Banner (Always ready if in Landing phase or Go-Around) -->
+      <div id="go-around-callout" class="hidden rounded-2xl border-2 border-amber-500 bg-amber-500/15 p-3.5 sm:p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-glow-amber strobe-caution">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-amber-500 text-slate-900 flex items-center justify-center font-bold text-base shrink-0">
+            <i class="fa-solid fa-plane-up"></i>
+          </div>
+          <div>
+            <div class="font-display font-extrabold text-sm sm:text-base text-amber-500">MISSED APPROACH / GO-AROUND GEREKTİ Mİ?</div>
+            <p class="text-[11px] font-mono text-slate-600 dark:text-amber-200/90">Pist uygun değilse veya unstabilized yaklaşmada derhal uygulayın.</p>
+          </div>
+        </div>
+        <button id="btn-trigger-landing-ga" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono font-black text-xs tracking-wider shadow-lg active:scale-95 transition flex items-center justify-center gap-2 shrink-0">
+          <i class="fa-solid fa-angles-up"></i> GO-AROUND BAŞLAT
+        </button>
+      </div>
+
+      <!-- Phase Header Card with Master OK Button -->
+      <div class="rounded-2xl border border-slate-200 dark:border-thy-nightBorder bg-white dark:bg-thy-nightCard p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+        <div>
+          <div class="flex items-center gap-2 sm:gap-2.5 mb-1 flex-wrap">
+            <span id="header-phase-badge" class="px-2 py-0.5 rounded-md bg-thy-red text-white font-mono font-bold text-xs tracking-wider">
+              PHASE 1/11
+            </span>
+            <h2 id="header-phase-title" class="font-display font-extrabold text-lg sm:text-2xl text-slate-900 dark:text-white">
+              BEFORE START CHECKLIST
+            </h2>
+          </div>
+          <p id="header-phase-desc" class="text-xs text-slate-500 dark:text-slate-400 font-mono">
+            Kokpit hazırlığı, ağırlık-denge ve pushback öncesi kontroller.
+          </p>
+        </div>
+
+        <!-- Master OK / CHECK Action Button -->
+        <button id="btn-action-ok" class="w-full sm:w-auto px-6 sm:px-8 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-mono font-extrabold text-sm sm:text-base tracking-widest shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 active:scale-95 transition flex items-center justify-center gap-2.5 shrink-0">
+          <i class="fa-solid fa-check-double text-lg"></i>
+          <span id="btn-action-label">OK / CHECK</span>
+          <span class="text-[10px] px-1.5 py-0.5 rounded bg-black/25 text-emerald-100 font-mono font-normal hidden md:inline">SPACE</span>
+        </button>
+      </div>
+
+      <!-- Checklist Items Container -->
+      <div id="checklist-items-container" class="space-y-2.5 sm:space-y-3">
+        <!-- Dynamically rendered -->
+      </div>
+
+      <!-- Phase Complete Congratulatory Banner -->
+      <div id="phase-complete-banner" class="hidden rounded-2xl border-2 border-emerald-500 bg-emerald-500/10 p-6 text-center shadow-glow-green transition-all">
+        <div class="w-12 h-12 mx-auto rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl mb-3 shadow-lg shadow-emerald-500/40">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <h3 class="font-display font-extrabold text-lg text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">
+          CHECKLIST COMPLETED
+        </h3>
+        <p id="complete-msg" class="text-xs font-mono text-slate-600 dark:text-slate-300 mt-1 max-w-md mx-auto">
+          Tüm adımlar başarıyla crosscheck edildi. Bir sonraki uçuş fazına geçebilirsiniz.
+        </p>
+
+        <!-- Standard Next Phase Button -->
+        <div id="next-phase-actions" class="mt-4 flex flex-wrap items-center justify-center gap-3">
+          <button id="btn-next-phase" class="px-6 py-2.5 rounded-xl bg-thy-red hover:bg-red-600 text-white font-mono font-bold text-xs tracking-wider transition shadow-lg shadow-red-500/30">
+            SONRAKİ FAZA GEÇ (NEXT PHASE) <i class="fa-solid fa-chevron-right ml-1"></i>
+          </button>
+        </div>
+
+        <!-- Special Go-Around Transition Action (Shown only when Go-Around finishes) -->
+        <div id="ga-complete-actions" class="hidden mt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <button id="btn-proceed-2nd-approach" class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-mono font-bold text-xs sm:text-sm tracking-wider transition shadow-lg shadow-emerald-500/30 flex items-center gap-2">
+            <i class="fa-solid fa-rotate-left"></i> 2. YAKLAŞMAYA BAŞLA (PROCEED TO 2ND APPROACH)
+          </button>
+        </div>
+      </div>
+
+      <!-- Pilot Quick Reference Footer -->
+      <div class="flex flex-wrap items-center justify-between gap-2 p-3 rounded-xl border border-dashed border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-500 dark:text-slate-400">
+        <div class="flex items-center gap-1.5">
+          <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-[10px] text-slate-700 dark:text-slate-200">SPACE</kbd>
+          <span>/</span>
+          <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-[10px] text-slate-700 dark:text-slate-200">ENTER</kbd>
+          <span>: Sıradaki Maddeyi Doğrula</span>
+        </div>
+        <div>
+          <span>THY Flight Operations • A321 NEO Fleet SOP</span>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <div id="failures-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md hidden opacity-0 transition-opacity duration-200">
+    <div class="bg-white dark:bg-thy-nightCard border-2 border-red-600 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      
+      <!-- Modal Header with Warning Bar -->
+      <div class="bg-gradient-to-r from-red-700 via-thy-red to-red-800 p-4 text-white flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-white text-thy-red flex items-center justify-center text-lg font-black shadow">
+            <i class="fa-solid fa-triangle-exclamation animate-pulse"></i>
+          </div>
+          <div>
+            <h3 class="font-display font-extrabold text-base sm:text-lg leading-tight">
+              A321 NEO • ABNORMAL & SYSTEM FAILURES (QRH)
+            </h3>
+            <p class="text-[11px] font-mono text-red-100">Airbus ECAM Prosedürleri & Kritik Arıza Yönetimi</p>
+          </div>
+        </div>
+        <button id="close-failures-btn" class="text-white/80 hover:text-white p-2 text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Arıza Seçim Butonları (Grid Tabs) -->
+      <div class="p-3 bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <button class="failure-tab-btn active px-2.5 py-2 rounded-xl text-left border font-mono text-xs font-bold transition" data-failure="eng_fail">
+          <span class="block text-[10px] text-red-500 font-black">ENG</span>
+          <span class="truncate">FAIL / FIRE</span>
+        </button>
+        <button class="failure-tab-btn px-2.5 py-2 rounded-xl text-left border font-mono text-xs font-bold transition" data-failure="cabin_alt">
+          <span class="block text-[10px] text-red-500 font-black">CABIN</span>
+          <span class="truncate">RAPID DEPRESS</span>
+        </button>
+        <button class="failure-tab-btn px-2.5 py-2 rounded-xl text-left border font-mono text-xs font-bold transition" data-failure="hyd_loss">
+          <span class="block text-[10px] text-amber-500 font-black">HYDRAULIC</span>
+          <span class="truncate">DUAL HYD LO PR</span>
+        </button>
+        <button class="failure-tab-btn px-2.5 py-2 rounded-xl text-left border font-mono text-xs font-bold transition" data-failure="unreliable_speed">
+          <span class="block text-[10px] text-amber-500 font-black">NAV / ADR</span>
+          <span class="truncate">UNREL AIRSPEED</span>
+        </button>
+      </div>
+
+      <!-- Arıza İçeriği & QRH Adımları -->
+      <div class="p-4 sm:p-6 overflow-y-auto flex-1 space-y-4 font-mono text-xs">
+        <div id="failure-detail-container">
+          <!-- Dynamically populated failure info and checklist -->
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 bg-slate-100 dark:bg-slate-900/90 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+          <i class="fa-solid fa-shield-halved text-emerald-500 mr-1"></i> ECAM Eylemleri ve QRH maddeleri tamamlandığında dönün.
+        </div>
+        <button id="btn-resume-normal" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-mono font-bold text-xs tracking-wider transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30">
+          <i class="fa-solid fa-arrow-turn-down-left"></i> STANDART KONTROL LİSTESİNE DÖN
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="install-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-200">
+    <div class="bg-white dark:bg-thy-nightCard border border-slate-300 dark:border-thy-nightBorder rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-5 text-slate-800 dark:text-slate-100">
+      
+      <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-full bg-thy-red flex items-center justify-center text-white text-sm font-bold">
+            <i class="fa-solid fa-cloud-arrow-down"></i>
+          </div>
+          <div>
+            <h3 class="font-display font-extrabold text-base sm:text-lg text-slate-900 dark:text-white">
+              A321 NEO Standalone Kurulumu
+            </h3>
+            <p class="text-[11px] font-mono text-slate-500 dark:text-slate-400">Tarayıcı çubuğu olmadan tam ekran EFB aplikasyonu</p>
+          </div>
+        </div>
+        <button id="close-modal-btn" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-white rounded-lg">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs font-mono">
+        <div class="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-2">
+          <div class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-expand text-thy-red"></i>
+            <span>Hızlı Çözüm: Anında Tam Ekran Yap</span>
+          </div>
+          <p class="text-slate-600 dark:text-slate-400 text-[11px]">
+            Cihazınızda hemen adres çubuklarını gizleyerek tam ekran kokpit ekranını başlatmak için dokunun:
+          </p>
+          <button id="btn-modal-force-fullscreen" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center justify-center gap-2">
+            <i class="fa-solid fa-arrows-maximize"></i> TAM EKRANI BAŞLAT
+          </button>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-sky-500/10 border border-sky-500/30 space-y-2">
+          <div class="font-bold text-sky-600 dark:text-sky-400 flex items-center gap-2">
+            <i class="fa-brands fa-apple text-base"></i>
+            <span>Apple iPhone & iPad (Safari)</span>
+          </div>
+          <ol class="list-decimal list-inside space-y-1.5 text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">
+            <li>Safari alt çubuğundaki <strong>Paylaş</strong> (<i class="fa-solid fa-arrow-up-from-bracket"></i>) simgesine dokunun.</li>
+            <li>Aşağı kaydırıp <strong>"Ana Ekrana Ekle" (Add to Home Screen)</strong> seçeneğine dokunun.</li>
+            <li>Sağ üstteki <strong>"Ekle"</strong>ye dokunun.</li>
+            <li>Ana ekrandaki <strong>THY A321</strong> simgesinden açıldığında %100 yerel ve tam ekran başlar.</li>
+          </ol>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-2">
+          <div class="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
+            <i class="fa-brands fa-android text-base"></i>
+            <span>Android (Chrome & Edge)</span>
+          </div>
+          <p class="text-slate-600 dark:text-slate-300 text-[11px]">
+            Doğrudan bağımsız PWA olarak yükleyebilirsiniz:
+          </p>
+          <button id="btn-native-pwa-install" class="w-full py-2.5 rounded-xl bg-thy-red hover:bg-red-600 text-white font-bold flex items-center justify-center gap-2">
+            <i class="fa-solid fa-download"></i> UYGULAMAYI CİHAZA YÜKLE
+          </button>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button id="btn-modal-dismiss" class="px-5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-mono font-bold">
+          ANLADIM / KAPAT
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Stack -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <script>
+    (function initPWAEnvironment() {
+      const manifestData = {
+        name: "Turkish Airlines A321 NEO Checklist",
+        short_name: "THY A321",
+        description: "Airbus A321 NEO Electronic Flight Bag Checklist with Failure & Go-Around SOP",
+        start_url: window.location.href,
+        display: "standalone",
+        display_override: ["fullscreen", "standalone", "window-controls-overlay"],
+        background_color: "#080D1A",
+        theme_color: "#C8102E",
+        orientation: "any",
+        scope: "./",
+        icons: [
+          {
+            src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%23C8102E'/%3E%3Cpath d='M146 56 C120 68, 86 86, 56 102 C42 109, 34 118, 46 124 C60 129, 84 122, 110 108 C99 124, 80 144, 62 156 C52 163, 48 170, 60 170 C84 170, 114 144, 138 120 C156 98, 168 72, 166 60 C164 53, 156 53, 146 56 Z' fill='%23FFFFFF'/%3E%3C/svg%3E",
+            sizes: "192x192",
+            type: "image/svg+xml",
+            purpose: "any maskable"
+          }
+        ]
+      };
+
+      const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+      const manifestURL = URL.createObjectURL(manifestBlob);
+      const manifestEl = document.getElementById('manifest-placeholder');
+      if (manifestEl) manifestEl.setAttribute('href', manifestURL);
+
+      if ('serviceWorker' in navigator) {
+        const swCode = `
+          self.addEventListener('install', e => self.skipWaiting());
+          self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
+          self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));
+        `;
+        const swBlob = new Blob([swCode], { type: 'application/javascript' });
+        navigator.serviceWorker.register(URL.createObjectURL(swBlob), { scope: './' })
+          .catch(err => console.log('SW fallback active', err));
+      }
+    })();
+  </script>
+
+  <script>
+    /* MASTER CHECKLIST DATA (Standard + Integrated Go-Around) */
+    const CHECKLIST_DATA = [
       {
-        id: "before_start",
-        title: "BEFORE START",
+        id: 'before_start',
+        name: 'BEFORE START',
+        fullName: 'BEFORE START CHECKLIST',
+        desc: 'Kokpit hazırlığı, ağırlık-denge ve pushback öncesi kontroller.',
         items: [
-          { item: "Cockpit Prep", action: "Completed" },
-          { item: "Gear Pins & Covers", action: "Removed" },
-          { item: "Signs", action: "On / Auto" },
-          { item: "ADIRS", action: "NAV" },
-          { item: "Fuel Quantity", action: "____ kg / Balanced" },
-          { item: "TO Data", action: "Set (ZFW, ZFWCG, V1, VR, V2, Flex/TOGA)" },
-          { item: "Baro Ref", action: "____ Set / Crosschecked" },
-          { isDivider: true, text: "--- Below The Line (Pushback & Start İzni Alındığında) ---" },
-          { item: "Windows / Doors", action: "Closed" },
-          { item: "Beacon", action: "On" },
-          { item: "Thr Levers", action: "Idle" },
-          { item: "Parking Brake", action: "As Required" }
+          { id: 'bs_1', challenge: 'Cockpit Prep', response: 'Completed', type: 'standard' },
+          { id: 'bs_2', challenge: 'Gear Pins & Covers', response: 'Removed', type: 'standard' },
+          { id: 'bs_3', challenge: 'Signs', response: 'On / Auto', type: 'standard' },
+          { id: 'bs_4', challenge: 'ADIRS', response: 'NAV', type: 'standard' },
+          { id: 'bs_5', challenge: 'Fuel Quantity', response: '____ kg / Balanced', type: 'variable', varLabel: 'Yakıt', defaultVal: '14200', unit: 'kg / Balanced' },
+          { id: 'bs_6', challenge: 'TO Data', response: 'Set (ZFW, ZFWCG, V1, VR, V2, Flex/TOGA)', type: 'standard', note: 'MCDU PERF sayfasında crosscheck edildi' },
+          { id: 'bs_7', challenge: 'Baro Ref', response: '____ Set / Crosschecked', type: 'variable', varLabel: 'QNH (hPa)', defaultVal: '1013', unit: 'hPa Set' },
+          { id: 'bs_line', type: 'separator', title: '--- Below The Line ---', condition: 'Pushback & Start izni alındığında uygulanır' },
+          { id: 'bs_8', challenge: 'Windows / Doors', response: 'Closed', type: 'standard' },
+          { id: 'bs_9', challenge: 'Beacon', response: 'On', type: 'standard' },
+          { id: 'bs_10', challenge: 'Thr Levers', response: 'Idle', type: 'standard' },
+          { id: 'bs_11', challenge: 'Parking Brake', response: 'As Required', type: 'standard' }
         ]
       },
       {
-        id: "after_start",
-        title: "AFTER START",
+        id: 'after_start',
+        name: 'AFTER START',
+        fullName: 'AFTER START CHECKLIST',
+        desc: 'Motor çalıştırma sonrası sistem kontrolleri ve trim ayarları.',
         items: [
-          { item: "Anti Ice", action: "As Required" },
-          { item: "ECAM Status", action: "Checked" },
-          { item: "Pitch Trim", action: "____% Set" },
-          { item: "Rudder Trim", action: "0 / Neutral" }
+          { id: 'as_1', challenge: 'Anti Ice', response: 'As Required', type: 'standard' },
+          { id: 'as_2', challenge: 'ECAM Status', response: 'Checked', type: 'standard' },
+          { id: 'as_3', challenge: 'Pitch Trim', response: '____% Set', type: 'variable', varLabel: 'Pitch Trim', defaultVal: '1.2 UP', unit: '% Set' },
+          { id: 'as_4', challenge: 'Rudder Trim', response: '0 / Neutral', type: 'standard' }
         ]
       },
       {
-        id: "taxi",
-        title: "TAXI",
+        id: 'taxi',
+        name: 'TAXI',
+        fullName: 'TAXI CHECKLIST',
+        desc: 'Taksi esnasında uçuş kumandaları, flap ve kalkış memosu.',
         items: [
-          { item: "Flight Controls", action: "Checked (Full Travel)" },
-          { item: "Flaps Setting", action: "Conf ____" },
-          { item: "Spoilers", action: "Armed" },
-          { item: "Auto Brake", action: "MAX" },
-          { item: "Takeoff Memo", action: "No Blue" },
-          { isDivider: true, text: "--- Below The Line (Runway Yaklaşırken) ---" },
-          { item: "Cabin Report", action: "Ready" },
-          { item: "TCAS", action: "TA/RA" },
-          { item: "Eng Mode Sel", action: "As Required" },
-          { item: "Packs", action: "As Required" }
+          { id: 'tx_1', challenge: 'Flight Controls', response: 'Checked (Full UP/DN/L/R, Neutral, Rudder Full)', type: 'standard' },
+          { id: 'tx_2', challenge: 'Flaps Setting', response: 'Conf ____', type: 'variable', varLabel: 'Flaps', defaultVal: '1+F', unit: '' },
+          { id: 'tx_3', challenge: 'Spoilers', response: 'Armed', type: 'standard' },
+          { id: 'tx_4', challenge: 'Auto Brake', response: 'MAX', type: 'standard' },
+          { id: 'tx_5', challenge: 'Takeoff Memo', response: 'No Blue', type: 'standard', note: 'ECAM üzerinde kalkış maddeleri hazır' },
+          { id: 'tx_line', type: 'separator', title: '--- Below The Line ---', condition: 'Kalkış sırası yaklaşırken / Runway kabullerinde uygulanır' },
+          { id: 'tx_6', challenge: 'Cabin Report', response: 'Ready', type: 'standard' },
+          { id: 'tx_7', challenge: 'TCAS', response: 'TA/RA', type: 'standard' },
+          { id: 'tx_8', challenge: 'Eng Mode Sel', response: 'As Required (Norm / Ign)', type: 'standard' },
+          { id: 'tx_9', challenge: 'Packs', response: 'As Required (Off / APU Bleed)', type: 'standard' }
         ]
       },
       {
-        id: "line_up",
-        title: "LINE-UP",
+        id: 'line_up',
+        name: 'LINE-UP',
+        fullName: 'LINE-UP CHECKLIST',
+        desc: 'Pist içi beklemede/girişte sessiz veya sözlü doğrulanır.',
         items: [
-          { item: "TCAS", action: "TA/RA" },
-          { item: "Packs", action: "Set" },
-          { item: "Exterior Lights", action: "Takeoff / On" }
+          { id: 'lu_1', challenge: 'TCAS', response: 'TA/RA', type: 'standard' },
+          { id: 'lu_2', challenge: 'Packs', response: 'Set', type: 'standard' },
+          { id: 'lu_3', challenge: 'Exterior Lights', response: 'Takeoff / On', type: 'standard' }
         ]
       },
       {
-        id: "after_takeoff",
-        title: "AFTER TAKEOFF",
+        id: 'after_takeoff',
+        name: 'AFTER TAKEOFF',
+        fullName: 'AFTER TAKEOFF CHECKLIST / FLOW',
+        desc: 'Tırmanış safhasında uçak konfigürasyonu ve baro ayarı.',
         items: [
-          { item: "Landing Gear", action: "Up" },
-          { item: "Flaps", action: "Retracted (0 / Clean)" },
-          { item: "Spoilers", action: "Disarmed" },
-          { item: "APU Bleed / Master", action: "Off" },
-          { item: "Eng Mode Selector", action: "Normal" },
-          { item: "Anti Ice", action: "As Required" },
-          { item: "TCAS", action: "TA/RA" },
-          { item: "Baro Reference", action: "Standard Set & Crosschecked" },
-          { item: "ECAM Memo", action: "Checked" }
+          { id: 'at_1', challenge: 'Landing Gear', response: 'Up', type: 'standard' },
+          { id: 'at_2', challenge: 'Flaps', response: 'Retracted (0 / Clean)', type: 'standard' },
+          { id: 'at_3', challenge: 'Spoilers', response: 'Disarmed', type: 'standard' },
+          { id: 'at_4', challenge: 'APU Bleed / APU Master', response: 'Off', type: 'standard' },
+          { id: 'at_5', challenge: 'Eng Mode Selector', response: 'Normal', type: 'standard' },
+          { id: 'at_6', challenge: 'Anti Ice', response: 'As Required', type: 'standard' },
+          { id: 'at_7', challenge: 'TCAS', response: 'TA/RA (Teyit edildi)', type: 'standard' },
+          { id: 'at_8', challenge: 'Baro Reference', response: 'Standard Set & Crosschecked', type: 'standard', note: 'Transition Altitude geçilirken STD seçildi' },
+          { id: 'at_9', challenge: 'ECAM Memo', response: 'Checked', type: 'standard' }
         ]
       },
       {
-        id: "before_descent",
-        title: "BEFORE DESCENT",
+        id: 'before_descent',
+        name: 'BEFORE DESCENT',
+        fullName: 'BEFORE DESCENT CHECKLIST',
+        desc: 'Alçalma planı, yaklaşma brifingi ve iniş performansı.',
         items: [
-          { item: "Landing Performance", action: "Calculated & Inserted" },
-          { item: "Navigation / Radio Aids", action: "Checked & Tuned" },
-          { item: "Auto Brake", action: "Low / Med / BTV" },
-          { item: "Approach Briefing", action: "Completed" },
-          { item: "Descent Clearance", action: "Obtained" },
-          { item: "Anti Ice", action: "As Required" },
-          { item: "ECAM Status", action: "Checked" },
-          { item: "Signs (Seat Belts)", action: "On" }
+          { id: 'bd_1', challenge: 'Landing Performance (MCDU)', response: 'Calculated & Inserted', type: 'standard' },
+          { id: 'bd_2', challenge: 'Navigation / Radio Aids', response: 'Checked & Tuned', type: 'standard' },
+          { id: 'bd_3', challenge: 'Auto Brake', response: 'Low / Med / BTV', type: 'standard' },
+          { id: 'bd_4', challenge: 'Approach Briefing', response: 'Completed', type: 'standard' },
+          { id: 'bd_5', challenge: 'Descent Clearance', response: 'Obtained', type: 'standard' },
+          { id: 'bd_6', challenge: 'Anti Ice', response: 'As Required', type: 'standard' },
+          { id: 'bd_7', challenge: 'ECAM Status', response: 'Checked', type: 'standard' },
+          { id: 'bd_8', challenge: 'Signs (Seat Belts)', response: 'On', type: 'standard' }
         ]
       },
       {
-        id: "approach",
-        title: "APPROACH",
+        id: 'approach',
+        name: 'APPROACH',
+        fullName: 'APPROACH CHECKLIST',
+        desc: 'Son yaklaşma öncesi baro referansı ve minimumlar.',
         items: [
-          { item: "Briefing", action: "Confirmed" },
-          { item: "ECAM Status", action: "Checked" },
-          { item: "Seat Belts", action: "On" },
-          { item: "Baro Ref", action: "____ Set / Crosschecked" },
-          { item: "MDA / DH", action: "Set" }
+          { id: 'ap_1', challenge: 'Briefing', response: 'Confirmed', type: 'standard' },
+          { id: 'ap_2', challenge: 'ECAM Status', response: 'Checked', type: 'standard' },
+          { id: 'ap_3', challenge: 'Seat Belts', response: 'On', type: 'standard' },
+          { id: 'ap_4', challenge: 'Baro Ref', response: '____ Set / Crosschecked', type: 'variable', varLabel: 'QNH (hPa)', defaultVal: '1018', unit: 'hPa Set' },
+          { id: 'ap_5', challenge: 'MDA / DH', response: 'Set', type: 'standard' }
         ]
       },
       {
-        id: "landing",
-        title: "LANDING",
+        id: 'landing',
+        name: 'LANDING',
+        fullName: 'LANDING CHECKLIST',
+        desc: 'Teker koyma öncesi flap, iniş takımı ve kabin hazırlığı.',
         items: [
-          { item: "Cabin", action: "Ready" },
-          { item: "Auto Thrust", action: "Speed / Off" },
-          { item: "Auto Brake", action: "Set (Low / Med / BTV)" },
-          { item: "Landing Gear", action: "Down (3 Green)" },
-          { item: "Flaps", action: "Conf 3 / Conf Full" }
+          { id: 'ld_1', challenge: 'Cabin', response: 'Ready', type: 'standard' },
+          { id: 'ld_2', challenge: 'Auto Thrust', response: 'Speed / Off', type: 'standard' },
+          { id: 'ld_3', challenge: 'Auto Brake', response: 'Set (Low / Med / BTV)', type: 'standard' },
+          { id: 'ld_4', challenge: 'Landing Gear', response: 'Down (3 Green)', type: 'standard', note: '3 Yeşil lamba görsel teyidi' },
+          { id: 'ld_5', challenge: 'Flaps', response: 'Conf 3 / Conf Full', type: 'standard' }
         ]
       },
       {
-        id: "parking",
-        title: "PARKING",
-        items: [
-          { item: "Parking Brake / Chocks", action: "Set / In Place" },
-          { item: "Engines (1 & 2)", action: "Off" },
-          { item: "Wing Anti Ice", action: "Off" },
-          { item: "Fuel Pumps", action: "Off" },
-          { item: "Beacon", action: "Off" }
-        ]
-      },
-      {
-        id: "securing",
-        title: "SECURING AIRCRAFT",
-        items: [
-          { item: "ADIRS", action: "Off" },
-          { item: "Oxygen", action: "Off" },
-          { item: "APU / Ext Power", action: "Off" },
-          { item: "Batteries", action: "Off" }
-        ]
-      },
-      {
-        id: "go_around",
-        title: "GO-AROUND",
+        id: 'go_around',
+        name: 'GO-AROUND',
+        fullName: 'MISSED APPROACH / GO-AROUND CHECKLIST',
+        desc: 'Pas geçme manevrası, tırmanış konfigürasyonu ve 2. yaklaşma hazırlığı.',
         isSpecial: true,
         items: [
-          { item: "Thrust Levers", action: "TOGA" },
-          { item: "Rotation", action: "Performed" },
-          { item: "Flaps", action: "Retract One Step" },
-          { item: "Gear", action: "Up" },
-          { item: "NAV / HDG", action: "Managed / Selected" },
-          { item: "Thrust Levers", action: "Climb" },
-          { item: "Flaps & Spoilers", action: "Clean / Disarmed" },
-          { item: "Autobrake & Memo", action: "Off / Checked" }
+          { id: 'ga_1', challenge: 'Thrust Levers', response: 'TOGA (Set TOGA Detent)', type: 'standard', note: 'FMA teyidi: MAN TOGA / SRS / GA TRK' },
+          { id: 'ga_2', challenge: 'Rotation', response: 'Performed (Follow SRS pitch order)', type: 'standard' },
+          { id: 'ga_3', challenge: 'Flaps', response: 'Retract One Step (Conf 3 veya 2)', type: 'standard' },
+          { id: 'ga_4', challenge: 'Landing Gear', response: 'UP (Positive Climb teyidiyle)', type: 'standard' },
+          { id: 'ga_5', challenge: 'NAV / HDG Mode', response: 'Engaged / Managed', type: 'standard', note: 'Yayınlanan pas geçme rotası (Missed App Procedure)' },
+          { id: 'ga_6', challenge: 'Thrust Levers (at Thrust Reduction Alt)', response: 'CL (Climb Detent)', type: 'standard' },
+          { id: 'ga_7', challenge: 'Flaps / Spoilers', response: 'Retracted (0/Clean) / Disarmed', type: 'standard' },
+          { id: 'ga_8', challenge: 'Auto Brake & ECAM Memo', response: 'Disarmed / Checked', type: 'standard' }
+        ]
+      },
+      {
+        id: 'parking',
+        name: 'PARKING',
+        fullName: 'PARKING CHECKLIST',
+        desc: 'Park pozisyonunda motor durdurma ve takoz kontrolü.',
+        items: [
+          { id: 'pk_1', challenge: 'Parking Brake / Chocks', response: 'Set / In Place', type: 'standard' },
+          { id: 'pk_2', challenge: 'Engines (1 & 2)', response: 'Off', type: 'standard' },
+          { id: 'pk_3', challenge: 'Wing Anti Ice', response: 'Off', type: 'standard' },
+          { id: 'pk_4', challenge: 'Fuel Pumps', response: 'Off', type: 'standard' },
+          { id: 'pk_5', challenge: 'Beacon', response: 'Off', type: 'standard' }
+        ]
+      },
+      {
+        id: 'securing',
+        name: 'SECURING AIRCRAFT',
+        fullName: 'SECURING THE AIRCRAFT CHECKLIST',
+        desc: 'Uçağın tamamen terk edilmesi ve sistemlerin kapatılması.',
+        items: [
+          { id: 'sc_1', challenge: 'ADIRS', response: 'Off', type: 'standard' },
+          { id: 'sc_2', challenge: 'Oxygen', response: 'Off', type: 'standard' },
+          { id: 'sc_3', challenge: 'APU / Ext Power', response: 'Off', type: 'standard' },
+          { id: 'sc_4', challenge: 'Batteries', response: 'Off', type: 'standard' }
         ]
       }
     ];
 
-    const failureData = [
-      {
-        title: "ENG 1/2 FAIL OR FIRE",
-        steps: ["THR LEVERS: IDLE", "ENG MASTER (AFFECTED): OFF", "ENG FIRE PB: PUSH", "AGENT 1: DISCHARGE (IF REQUIRED)"]
+    /* SYSTEM FAILURES (QRH) DATABASE */
+    const FAILURES_DATA = {
+      eng_fail: {
+        title: 'ENG 1/2 FAIL OR FIRE (A321 NEO)',
+        severity: 'CRITICAL',
+        desc: 'Motor arızası, alev sönmesi (flameout) veya yangın ikazı durumunda ECAM ve QRH prosedürü.',
+        steps: [
+          { challenge: 'Thrust Lever (Affected Engine)', response: 'IDLE (Teyitli çekilir)' },
+          { challenge: 'Engine Master (Affected Engine)', response: 'OFF' },
+          { challenge: 'ENG FIRE PUSHBUTTON', response: 'PUSH (Release)' },
+          { challenge: 'AGENT 1 (If Fire Light On after 10s)', response: 'DISCHARGE' },
+          { challenge: 'AGENT 2 (If Fire Light Still On after 30s)', response: 'DISCHARGE' },
+          { challenge: 'APU Master', response: 'START (Elektrik/Bleed yedeği)' },
+          { challenge: 'ATC (Mayday / Pan-Pan)', response: 'NOTIFIED (Intentions & Fuel declared)' },
+          { challenge: 'Status Page & Land ASAP', response: 'CHECKED & ASSESSED' }
+        ]
       },
-      {
-        title: "CABIN ALTITUDE / RAPID DEPRESS",
-        steps: ["OXYGEN MASKS: ON / 100%", "EMERGENCY DESCENT: INITIATE", "THR LEVERS: IDLE", "SPEED BRAKES: FULL"]
+      cabin_alt: {
+        title: 'CABIN ALTITUDE / RAPID DEPRESSURIZATION',
+        severity: 'EMERGENCY',
+        desc: 'Kabin irtifası > 9.550 ft uyarısı ve ani basınç kaybında acil alçalma akışı.',
+        steps: [
+          { challenge: 'CREW OXYGEN MASKS', response: 'ON / 100% / EMER' },
+          { challenge: 'COMMUNICATION', response: 'ESTABLISHED (Int/Mask mic)' },
+          { challenge: 'EMERGENCY DESCENT', response: 'INITIATE (ALT knob pull, HDG pull, SPD pull)' },
+          { challenge: 'THRUST LEVERS', response: 'IDLE' },
+          { challenge: 'SPEED BRAKES', response: 'FULL EXTEND' },
+          { challenge: 'SIGNS (Seat Belts)', response: 'ON' },
+          { challenge: 'PASSENGER OXYGEN MASKS', response: 'MAN ON (If required)' },
+          { challenge: 'ATC & TRANSPONDER', response: 'MAYDAY DECLARED / SQUAWK 7700' }
+        ]
       },
-      {
-        title: "DUAL HYD LO PR (G+Y / G+B)",
-        steps: ["MAX SPEED: 200 KT", "LANDING GEAR: GRAVITY EXTENSION", "FLAPS: CONF 3", "APPROACH SPEED: VREF + 25 KT"]
+      hyd_loss: {
+        title: 'DUAL HYDRAULIC LO PR (G+Y OR G+B)',
+        severity: 'ABNORMAL',
+        desc: 'Çift hidrolik basınç kaybında kumanda kanunları (Alternate Law) ve iniş takımı açma.',
+        steps: [
+          { challenge: 'Flight Controls Law', response: 'ALTERNATE LAW (Prot Lost)' },
+          { challenge: 'Max Speed', response: '320 KT / 0.77 M' },
+          { challenge: 'Landing Distance Calculation', response: 'MULTIPLIED BY FACTOR (~2.1)' },
+          { challenge: 'Landing Gear Extension', response: 'GRAVITY EXTENSION (Crank 3 turns)' },
+          { challenge: 'Flaps / Slats Configuration', response: 'L/G Gravity, Flaps per ECAM' },
+          { challenge: 'Approach Speed', response: 'VREF + VAPP ADDER SET' }
+        ]
+      },
+      unreliable_speed: {
+        title: 'UNRELIABLE AIRSPEED INDICATION',
+        severity: 'ABNORMAL',
+        desc: 'Pitot-Statik tüp tıkanıklığı veya ADR tutarsızlıklarında Pitch/Thrust memory items.',
+        steps: [
+          { challenge: 'AP / FD', response: 'OFF' },
+          { challenge: 'A/THR (Auto Thrust)', response: 'OFF' },
+          { challenge: 'PITCH / THRUST (Below THRUST RED ALT)', response: '15° / TOGA' },
+          { challenge: 'PITCH / THRUST (Below FL100)', response: '10° / CLB' },
+          { challenge: 'PITCH / THRUST (Above FL100)', response: '5° / CLB' },
+          { challenge: 'FLAPS / SLATS (Except Conf Full)', response: 'MAINTAIN CURRENT CONF' },
+          { challenge: 'SPEEDBRAKES', response: 'CHECK DISARMED/RETRACTED' },
+          { challenge: 'LANDING GEAR', response: 'UP' }
+        ]
       }
-    ];
+    };
+  </script>
 
+  <script>
     let currentPhaseIndex = 0;
     let checkedState = {};
+    let variableInputs = {};
+    let soundEnabled = true;
+    let deferredPrompt = null;
+    let activeFailureKey = 'eng_fail';
 
-    function init() {
-      checklistData.forEach(p => { checkedState[p.id] = new Array(p.items.length).fill(false); });
-      renderNav();
-      renderPhase();
+    function checkIsStandalone() {
+      return window.matchMedia('(display-mode: standalone)').matches ||
+             window.navigator.standalone === true ||
+             document.referrer.includes('android-app://');
     }
 
-    function renderNav() {
-      const nav = document.getElementById("phaseNav");
-      nav.innerHTML = checklistData.map((p, idx) => {
-        if (p.isSpecial && currentPhaseIndex !== idx) return "";
-        const isDone = checkedState[p.id].every((val, i) => checklistData[idx].items[i].isDivider || val);
-        return `<div class="nav-tab ${idx === currentPhaseIndex ? 'active' : ''} ${isDone ? 'done' : ''}" onclick="selectPhase(${idx})">${p.title}</div>`;
-      }).join("");
+    function updateStandaloneUI() {
+      const isStandalone = checkIsStandalone();
+      const badgeText = document.getElementById('standalone-badge-text');
+      const badge = document.getElementById('standalone-badge');
+      const banner = document.getElementById('standalone-alert-banner');
+      const installBtnText = document.getElementById('install-btn-text');
+
+      if (isStandalone) {
+        badgeText.innerText = 'STANDALONE / EFB AKTİF';
+        badge.className = 'inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-1.5 py-0.5 rounded';
+        if (banner) banner.classList.add('hidden');
+        if (installBtnText) installBtnText.innerText = 'TAM EKRAN';
+      } else {
+        badgeText.innerText = 'TARAYICI MODU';
+        badge.className = 'inline-flex items-center gap-1 text-[9px] sm:text-[10px] font-mono font-bold text-amber-500 bg-amber-500/10 border border-amber-500/30 px-1.5 py-0.5 rounded';
+      }
     }
 
-    function selectPhase(idx) {
-      currentPhaseIndex = idx;
-      renderNav();
-      renderPhase();
-    }
-
-    function renderPhase() {
-      const phase = checklistData[currentPhaseIndex];
-      const container = document.getElementById("contentArea");
-      let html = "";
-
-      if (phase.id === "landing") {
-        html += `<div class="banner-alert" onclick="triggerGoAround()">
-          <span>⚠️ PAS GEÇME GEREKTİ Mİ? (MISSED APPROACH / GO-AROUND)</span>
-          <span>BAŞLAT ➔</span>
-        </div>`;
+    function initState() {
+      try {
+        const savedChecked = localStorage.getItem('thy_a321_checked_items');
+        if (savedChecked) {
+          const parsed = JSON.parse(savedChecked);
+          Object.keys(parsed).forEach(k => {
+            checkedState[k] = new Set(parsed[k]);
+          });
+        }
+        const savedVars = localStorage.getItem('thy_a321_vars');
+        if (savedVars) variableInputs = JSON.parse(savedVars);
+        
+        const savedPhase = localStorage.getItem('thy_a321_active_phase');
+        if (savedPhase !== null) currentPhaseIndex = parseInt(savedPhase, 10) || 0;
+      } catch (e) {
+        console.warn('LocalStorage error:', e);
       }
 
-      if (phase.id === "go_around") {
-        html += `<div class="banner-alert" style="background: rgba(0, 229, 255, 0.15); border-color: var(--ecam-cyan); color: var(--ecam-cyan);" onclick="returnToApproach()">
-          <span>🔄 2. YAKLAŞMAYA DÖN (RETURN TO APPROACH CHECKLIST)</span>
-          <span>DÖNÜŞ ➔</span>
-        </div>`;
+      CHECKLIST_DATA.forEach(p => {
+        if (!checkedState[p.id]) checkedState[p.id] = new Set();
+        p.items.forEach(item => {
+          if (item.type === 'variable' && !variableInputs[item.id]) {
+            variableInputs[item.id] = item.defaultVal || '';
+          }
+        });
+      });
+    }
+
+    function saveState() {
+      try {
+        const serializable = {};
+        Object.keys(checkedState).forEach(k => {
+          serializable[k] = Array.from(checkedState[k]);
+        });
+        localStorage.setItem('thy_a321_checked_items', JSON.stringify(serializable));
+        localStorage.setItem('thy_a321_vars', JSON.stringify(variableInputs));
+        localStorage.setItem('thy_a321_active_phase', currentPhaseIndex.toString());
+      } catch (e) {
+        console.warn('Save failed:', e);
+      }
+    }
+
+    /* Web Audio Avionics Chime & Caution Synthesizer */
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    function playTone(type = 'check') {
+      if (!soundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+
+        if (type === 'check') {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(880, now);
+          osc.frequency.exponentialRampToValueAtTime(1320, now + 0.08);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+          osc.start(now);
+          osc.stop(now + 0.12);
+        } else if (type === 'caution') {
+          // Airbus Single Chime (Master Caution)
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(587.33, now); // D5
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+          osc.start(now);
+          osc.stop(now + 0.5);
+        } else if (type === 'complete') {
+          [587.33, 880, 1174.66].forEach(freq => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.08, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now);
+            osc.stop(now + 0.45);
+          });
+        } else if (type === 'click') {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, now);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+          osc.start(now);
+          osc.stop(now + 0.05);
+        }
+      } catch (err) {
+        console.warn('Audio warning:', err);
+      }
+    }
+  </script>
+
+  <script>
+    const phasesNav = document.getElementById('phases-nav');
+    const headerPhaseBadge = document.getElementById('header-phase-badge');
+    const headerPhaseTitle = document.getElementById('header-phase-title');
+    const headerPhaseDesc = document.getElementById('header-phase-desc');
+    const checklistItemsContainer = document.getElementById('checklist-items-container');
+    const btnActionOk = document.getElementById('btn-action-ok');
+    const btnActionLabel = document.getElementById('btn-action-label');
+    const phaseCompleteBanner = document.getElementById('phase-complete-banner');
+    const nextPhaseActions = document.getElementById('next-phase-actions');
+    const gaCompleteActions = document.getElementById('ga-complete-actions');
+    const btnNextPhase = document.getElementById('btn-next-phase');
+    const btnProceed2ndApproach = document.getElementById('btn-proceed-2nd-approach');
+    const goAroundCallout = document.getElementById('go-around-callout');
+    const btnTriggerLandingGa = document.getElementById('btn-trigger-landing-ga');
+    const btnQuickGoAround = document.getElementById('btn-quick-goaround');
+    const activePhaseName = document.getElementById('active-phase-name');
+    const phaseProgressBar = document.getElementById('phase-progress-bar');
+    const completedCountEl = document.getElementById('completed-count');
+    const totalCountEl = document.getElementById('total-count');
+
+    // Modals and Utilities
+    const btnOpenFailures = document.getElementById('btn-open-failures');
+    const failuresModal = document.getElementById('failures-modal');
+    const closeFailuresBtn = document.getElementById('close-failures-btn');
+    const btnResumeNormal = document.getElementById('btn-resume-normal');
+    const failureDetailContainer = document.getElementById('failure-detail-container');
+    const failureTabBtns = document.querySelectorAll('.failure-tab-btn');
+
+    const btnInstallStandalone = document.getElementById('btn-install-standalone');
+    const btnToggleFullscreen = document.getElementById('btn-toggle-fullscreen');
+    const installModal = document.getElementById('install-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const btnModalDismiss = document.getElementById('btn-modal-dismiss');
+    const btnModalForceFullscreen = document.getElementById('btn-modal-force-fullscreen');
+    const btnNativePwaInstall = document.getElementById('btn-native-pwa-install');
+    const bannerActionBtn = document.getElementById('banner-action-btn');
+    const bannerCloseBtn = document.getElementById('banner-close-btn');
+    const standaloneAlertBanner = document.getElementById('standalone-alert-banner');
+    const btnAudioToggle = document.getElementById('btn-audio-toggle');
+    const audioIcon = document.getElementById('audio-icon');
+    const btnResetAll = document.getElementById('btn-reset-all');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeToggleIcon = document.getElementById('theme-toggle-icon');
+
+    function renderPhasesSidebar() {
+      phasesNav.innerHTML = '';
+
+      CHECKLIST_DATA.forEach((phase, idx) => {
+        const isCurrent = idx === currentPhaseIndex;
+        const totalItems = phase.items.filter(i => i.type !== 'separator').length;
+        const checkedCount = phase.items.filter(i => i.type !== 'separator' && checkedState[phase.id]?.has(i.id)).length;
+        const isFinished = totalItems > 0 && checkedCount === totalItems;
+
+        const navBtn = document.createElement('button');
+        let borderAndBg = isCurrent
+          ? (phase.isSpecial 
+              ? 'border-amber-500 bg-amber-500/15 text-amber-500 dark:text-amber-300 font-black shadow-glow-amber' 
+              : 'border-thy-red bg-red-500/10 dark:bg-red-950/40 text-slate-900 dark:text-white shadow-sm')
+          : isFinished
+            ? 'border-emerald-500/40 bg-emerald-50/50 dark:bg-emerald-950/20 text-slate-700 dark:text-slate-300'
+            : (phase.isSpecial 
+                ? 'border-amber-500/30 bg-amber-500/5 text-amber-600 dark:text-amber-400 hover:border-amber-500' 
+                : 'border-slate-200 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/40 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700');
+
+        navBtn.className = `w-full text-left p-2.5 sm:p-3 rounded-xl border transition-all duration-200 flex items-center justify-between gap-2 group ${borderAndBg}`;
+
+        navBtn.onclick = () => {
+          switchPhase(idx);
+          playTone('click');
+        };
+
+        navBtn.innerHTML = `
+          <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+            <span class="w-5 h-5 sm:w-6 sm:h-6 rounded-lg text-xs font-mono font-bold flex items-center justify-center shrink-0 ${
+              isFinished 
+                ? 'bg-emerald-500 text-white' 
+                : phase.isSpecial
+                  ? 'bg-amber-500 text-slate-950'
+                  : isCurrent 
+                    ? 'bg-thy-red text-white' 
+                    : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+            }">
+              ${isFinished ? '<i class="fa-solid fa-check text-[10px]"></i>' : (phase.isSpecial ? '<i class="fa-solid fa-arrows-rotate text-[10px]"></i>' : idx + 1)}
+            </span>
+            <span class="font-mono text-xs font-bold truncate ${isCurrent ? 'text-slate-900 dark:text-white' : ''}">
+              ${phase.name}
+            </span>
+          </div>
+
+          <div class="flex items-center gap-1 shrink-0">
+            <span class="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded ${
+              isFinished 
+                ? 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300' 
+                : 'bg-slate-200/70 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
+            }">
+              ${checkedCount}/${totalItems}
+            </span>
+          </div>
+        `;
+
+        phasesNav.appendChild(navBtn);
+      });
+    }
+
+    function getNextUncheckedIndex(phase) {
+      return phase.items.findIndex(item => item.type !== 'separator' && !checkedState[phase.id].has(item.id));
+    }
+
+    function renderActiveChecklist() {
+      const currentPhase = CHECKLIST_DATA[currentPhaseIndex];
+      headerPhaseBadge.innerText = currentPhase.isSpecial ? 'ABNORMAL / CONTINGENCY' : `PHASE ${currentPhaseIndex + 1}/${CHECKLIST_DATA.length}`;
+      headerPhaseBadge.className = currentPhase.isSpecial 
+        ? 'px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 font-mono font-bold text-xs tracking-wider' 
+        : 'px-2 py-0.5 rounded-md bg-thy-red text-white font-mono font-bold text-xs tracking-wider';
+      
+      headerPhaseTitle.innerText = currentPhase.fullName;
+      headerPhaseDesc.innerText = currentPhase.desc;
+      activePhaseName.innerText = currentPhase.fullName;
+
+      // Show or hide Go-Around Callout prompt when at Landing Phase
+      if (currentPhase.id === 'landing') {
+        goAroundCallout.classList.remove('hidden');
+      } else {
+        goAroundCallout.classList.add('hidden');
       }
 
-      html += `<div class="card"><div class="card-header"><span>${phase.title} CHECKLIST</span></div>`;
+      const actionableItems = currentPhase.items.filter(i => i.type !== 'separator');
+      const totalCount = actionableItems.length;
+      const checkedCount = actionableItems.filter(i => checkedState[currentPhase.id].has(i.id)).length;
+      const progressPercent = totalCount > 0 ? (checkedCount / totalCount) * 100 : 0;
 
-      phase.items.forEach((item, idx) => {
-        if (item.isDivider) {
-          html += `<div class="divider-line">${item.text}</div>`;
+      phaseProgressBar.style.width = `${progressPercent}%`;
+      completedCountEl.innerText = checkedCount;
+      totalCountEl.innerText = totalCount;
+
+      const activeUncheckedIndex = getNextUncheckedIndex(currentPhase);
+      const isComplete = activeUncheckedIndex === -1;
+
+      if (isComplete) {
+        btnActionLabel.innerText = 'TAMAMLANDI';
+        btnActionOk.classList.remove('from-emerald-600', 'to-teal-600');
+        btnActionOk.classList.add('bg-slate-400', 'cursor-not-allowed', 'opacity-60');
+        phaseCompleteBanner.classList.remove('hidden');
+
+        // Check if completing Go-Around phase -> Offer 2nd Approach button
+        if (currentPhase.id === 'go_around') {
+          nextPhaseActions.classList.add('hidden');
+          gaCompleteActions.classList.remove('hidden');
         } else {
-          const isChecked = checkedState[phase.id][idx];
-          html += `<div class="item-row ${isChecked ? 'checked' : ''}" onclick="toggleItem(${idx})">
-            <span class="item-title">${isChecked ? '✓' : '○'} ${item.item}</span>
-            <span class="item-action">${item.action}</span>
-          </div>`;
+          nextPhaseActions.classList.remove('hidden');
+          gaCompleteActions.classList.add('hidden');
+        }
+      } else {
+        btnActionLabel.innerText = 'OK / CHECK';
+        btnActionOk.classList.remove('bg-slate-400', 'cursor-not-allowed', 'opacity-60');
+        btnActionOk.classList.add('from-emerald-600', 'to-teal-600');
+        phaseCompleteBanner.classList.add('hidden');
+      }
+
+      checklistItemsContainer.innerHTML = '';
+      let actionableCounter = 0;
+
+      currentPhase.items.forEach((item, itemIdx) => {
+        if (item.type === 'separator') {
+          const sepDiv = document.createElement('div');
+          sepDiv.className = 'my-3 sm:my-4 p-3 rounded-xl border border-amber-500/40 below-line-stripe flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left';
+          sepDiv.innerHTML = `
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-triangle-exclamation text-amber-500 text-sm animate-pulse"></i>
+              <span class="font-mono font-bold text-xs tracking-wider uppercase text-amber-600 dark:text-amber-400">${item.title}</span>
+            </div>
+            <span class="text-[11px] font-mono text-slate-600 dark:text-amber-200/80 bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/20">
+              ${item.condition}
+            </span>
+          `;
+          checklistItemsContainer.appendChild(sepDiv);
+          return;
+        }
+
+        const isChecked = checkedState[currentPhase.id].has(item.id);
+        const isActiveTarget = itemIdx === activeUncheckedIndex;
+        actionableCounter++;
+
+        const card = document.createElement('div');
+        let borderClasses = 'border-slate-200 dark:border-slate-800 bg-white dark:bg-thy-nightCard';
+        if (isChecked) {
+          borderClasses = 'border-emerald-500/30 bg-emerald-500/5 dark:bg-emerald-950/15 opacity-90';
+        } else if (isActiveTarget) {
+          borderClasses = currentPhase.isSpecial 
+            ? 'border-amber-500 dark:border-amber-400 bg-amber-500/10 dark:bg-amber-950/30 shadow-md' 
+            : 'border-emerald-500 dark:border-emerald-400 bg-emerald-500/10 dark:bg-emerald-950/30 active-item-glow shadow-md';
+        }
+
+        card.className = `rounded-2xl p-3 sm:p-4 border transition-all duration-200 ${borderClasses} flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3`;
+
+        // Left challenge
+        const leftBox = document.createElement('div');
+        leftBox.className = 'flex items-start sm:items-center gap-2.5 sm:gap-3.5 flex-1';
+
+        const checkIconBtn = document.createElement('button');
+        checkIconBtn.type = 'button';
+        checkIconBtn.title = isChecked ? 'İşareti Kaldır' : 'Maddeni Doğrula';
+        checkIconBtn.className = `w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center font-mono text-xs font-bold transition-transform shrink-0 ${
+          isChecked 
+            ? 'bg-emerald-500 text-white shadow-glow-green scale-100' 
+            : isActiveTarget 
+              ? (currentPhase.isSpecial ? 'bg-amber-500 text-slate-950 font-black' : 'bg-emerald-500/20 text-emerald-500 border-2 border-emerald-500') 
+              : 'border border-slate-300 dark:border-slate-700 text-slate-400 hover:border-slate-400'
+        }`;
+        checkIconBtn.innerHTML = isChecked ? '<i class="fa-solid fa-check text-xs"></i>' : actionableCounter;
+        checkIconBtn.onclick = () => toggleCheckItem(item.id);
+
+        leftBox.appendChild(checkIconBtn);
+
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'flex-1';
+        infoDiv.innerHTML = `
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="font-mono text-xs sm:text-sm md:text-base font-bold tracking-tight ${isChecked ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'}">
+              ${item.challenge}
+            </span>
+            ${isActiveTarget ? '<span class="px-1.5 py-0.2 text-[8px] sm:text-[9px] font-mono font-bold tracking-widest bg-emerald-500 text-white rounded uppercase animate-pulse">SIRADAKİ</span>' : ''}
+          </div>
+          ${item.note ? `<p class="text-[10px] sm:text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-0.5"><i class="fa-solid fa-circle-info mr-1 text-sky-500"></i>${item.note}</p>` : ''}
+        `;
+        leftBox.appendChild(infoDiv);
+
+        // Right response
+        const rightBox = document.createElement('div');
+        rightBox.className = 'flex items-center justify-between sm:justify-end gap-2.5 sm:gap-3 pl-9 sm:pl-0 pt-1.5 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-slate-800/80';
+
+        if (item.type === 'variable') {
+          const inputWrapper = document.createElement('div');
+          inputWrapper.className = 'flex items-center gap-1.5';
+          const currentVal = variableInputs[item.id] !== undefined ? variableInputs[item.id] : item.defaultVal;
+
+          inputWrapper.innerHTML = `
+            <div class="relative flex items-center">
+              <input type="text" id="input-${item.id}" value="${currentVal}" placeholder="Değer" class="w-20 sm:w-28 px-2 py-1 sm:py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-thy-ecamCyan font-mono font-bold text-xs focus:ring-2 focus:ring-thy-red/40 focus:border-thy-red outline-none text-center">
+              <span class="text-[10px] sm:text-[11px] font-mono text-slate-500 dark:text-slate-400 ml-1.5">${item.unit || ''}</span>
+            </div>
+          `;
+
+          const inputField = inputWrapper.querySelector('input');
+          inputField.addEventListener('input', (e) => {
+            variableInputs[item.id] = e.target.value;
+            saveState();
+          });
+          inputField.addEventListener('click', (e) => e.stopPropagation());
+
+          rightBox.appendChild(inputWrapper);
+        } else {
+          const responseSpan = document.createElement('span');
+          responseSpan.className = `font-mono text-xs sm:text-sm font-bold tracking-wide ${
+            isChecked 
+              ? 'text-emerald-600 dark:text-thy-ecamGreen' 
+              : 'text-slate-600 dark:text-thy-ecamCyan'
+          }`;
+          responseSpan.innerText = item.response;
+          rightBox.appendChild(responseSpan);
+        }
+
+        const okRowBtn = document.createElement('button');
+        okRowBtn.type = 'button';
+        okRowBtn.className = `px-3 py-1.5 rounded-lg font-mono text-xs font-bold tracking-wider transition active:scale-95 ${
+          isChecked
+            ? 'bg-slate-100 dark:bg-slate-800 text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'
+            : isActiveTarget
+              ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm'
+              : 'bg-slate-100 dark:bg-slate-800 hover:bg-emerald-600 hover:text-white text-slate-700 dark:text-slate-300'
+        }`;
+        okRowBtn.innerText = isChecked ? 'RE-CHECK' : 'CHECK';
+        okRowBtn.onclick = (e) => {
+          e.stopPropagation();
+          toggleCheckItem(item.id);
+        };
+        rightBox.appendChild(okRowBtn);
+
+        card.appendChild(leftBox);
+        card.appendChild(rightBox);
+
+        checklistItemsContainer.appendChild(card);
+      });
+
+      renderPhasesSidebar();
+      updateStandaloneUI();
+    }
+  </script>
+
+  <script>
+    function confirmCurrentActiveItem() {
+      const currentPhase = CHECKLIST_DATA[currentPhaseIndex];
+      const activeIdx = getNextUncheckedIndex(currentPhase);
+
+      if (activeIdx !== -1) {
+        const item = currentPhase.items[activeIdx];
+        checkedState[currentPhase.id].add(item.id);
+        saveState();
+        playTone('check');
+
+        const nextIdx = getNextUncheckedIndex(currentPhase);
+        if (nextIdx === -1) {
+          playTone('complete');
+          showToast(`${currentPhase.name} kontrol listesi tamamlandı!`, 'success');
+        }
+
+        renderActiveChecklist();
+      } else {
+        if (currentPhase.id === 'go_around') {
+          proceedToSecondApproach();
+        } else if (currentPhaseIndex < CHECKLIST_DATA.length - 1) {
+          switchPhase(currentPhaseIndex + 1);
+          playTone('click');
+        }
+      }
+    }
+
+    function toggleCheckItem(itemId) {
+      const currentPhase = CHECKLIST_DATA[currentPhaseIndex];
+      if (checkedState[currentPhase.id].has(itemId)) {
+        checkedState[currentPhase.id].delete(itemId);
+        playTone('click');
+      } else {
+        checkedState[currentPhase.id].add(itemId);
+        playTone('check');
+        const nextIdx = getNextUncheckedIndex(currentPhase);
+        if (nextIdx === -1) {
+          playTone('complete');
+          showToast(`${currentPhase.name} kontrol listesi tamamlandı!`, 'success');
+        }
+      }
+      saveState();
+      renderActiveChecklist();
+    }
+
+    function switchPhase(newIndex) {
+      if (newIndex >= 0 && newIndex < CHECKLIST_DATA.length) {
+        currentPhaseIndex = newIndex;
+        saveState();
+        renderActiveChecklist();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    /* Go-Around Flow Initiator */
+    function triggerGoAroundFlow() {
+      const gaIndex = CHECKLIST_DATA.findIndex(p => p.id === 'go_around');
+      if (gaIndex !== -1) {
+        checkedState['go_around'].clear(); // Reset GA steps
+        currentPhaseIndex = gaIndex;
+        saveState();
+        playTone('caution');
+        renderActiveChecklist();
+        showToast('GO-AROUND İCRA EDİLİYOR! (TOGA / SRS / GA TRK)', 'warning');
+      }
+    }
+
+    /* Proceed directly to 2nd Approach */
+    function proceedToSecondApproach() {
+      checkedState['approach'].clear();
+      checkedState['landing'].clear();
+      const appIndex = CHECKLIST_DATA.findIndex(p => p.id === 'approach');
+      if (appIndex !== -1) {
+        currentPhaseIndex = appIndex;
+        saveState();
+        playTone('check');
+        renderActiveChecklist();
+        showToast('2. Yaklaşma Fazı Hazırlandı: APPROACH CHECKLIST aktif', 'info');
+      }
+    }
+
+    btnTriggerLandingGa.addEventListener('click', triggerGoAroundFlow);
+    btnQuickGoAround.addEventListener('click', triggerGoAroundFlow);
+    btnProceed2ndApproach.addEventListener('click', proceedToSecondApproach);
+
+    /* Render Failure Detail inside Modal */
+    function renderFailureDetail(key) {
+      activeFailureKey = key;
+      const data = FAILURES_DATA[key];
+      if (!data) return;
+
+      failureTabBtns.forEach(btn => {
+        if (btn.dataset.failure === key) {
+          btn.className = 'failure-tab-btn active px-2.5 py-2 rounded-xl text-left border font-mono text-xs font-bold transition bg-red-500/20 border-red-500 text-red-600 dark:text-red-400';
+        } else {
+          btn.className = 'failure-tab-btn px-2.5 py-2 rounded-xl text-left border font-mono text-xs font-bold transition border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400';
         }
       });
 
-      html += `</div>`;
-      container.innerHTML = html;
+      let stepsHtml = data.steps.map((st, i) => `
+        <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-lg bg-red-500/15 text-red-500 font-bold flex items-center justify-center text-xs">${i+1}</span>
+            <span class="font-bold text-slate-800 dark:text-white">${st.challenge}</span>
+          </div>
+          <span class="font-bold text-thy-ecamCyan">${st.response}</span>
+        </div>
+      `).join('');
+
+      failureDetailContainer.innerHTML = `
+        <div class="p-3.5 rounded-2xl border border-red-500/30 emergency-stripe mb-4">
+          <div class="flex items-center justify-between gap-2">
+            <h4 class="font-display font-extrabold text-sm sm:text-base text-red-600 dark:text-red-400">${data.title}</h4>
+            <span class="px-2 py-0.5 rounded bg-red-600 text-white font-bold text-[10px] tracking-widest">${data.severity}</span>
+          </div>
+          <p class="text-[11px] text-slate-600 dark:text-slate-300 mt-1">${data.desc}</p>
+        </div>
+        <div class="space-y-2">
+          ${stepsHtml}
+        </div>
+      `;
     }
 
-    function toggleItem(itemIdx) {
-      const phase = checklistData[currentPhaseIndex];
-      checkedState[phase.id][itemIdx] = !checkedState[phase.id][itemIdx];
-      playBeep(checkedState[phase.id][itemIdx] ? 880 : 440, 0.08);
-      renderPhase();
-      renderNav();
+    failureTabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        renderFailureDetail(btn.dataset.failure);
+        playTone('click');
+      });
+    });
+
+    btnOpenFailures.addEventListener('click', () => {
+      renderFailureDetail(activeFailureKey);
+      failuresModal.classList.remove('hidden');
+      requestAnimationFrame(() => failuresModal.classList.remove('opacity-0'));
+      playTone('caution');
+    });
+
+    function closeFailuresModal() {
+      failuresModal.classList.add('opacity-0');
+      setTimeout(() => failuresModal.classList.add('hidden'), 200);
     }
 
-    function confirmCurrentItem() {
-      const phase = checklistData[currentPhaseIndex];
-      const nextIdx = phase.items.findIndex((it, i) => !it.isDivider && !checkedState[phase.id][i]);
-      if (nextIdx !== -1) {
-        checkedState[phase.id][nextIdx] = true;
-        playBeep(880, 0.08);
-        renderPhase();
-        renderNav();
+    closeFailuresBtn.addEventListener('click', closeFailuresModal);
+    btnResumeNormal.addEventListener('click', () => {
+      closeFailuresModal();
+      showToast('Standart uçuş kontrol listesine dönüldü', 'info');
+    });
+
+    btnActionOk.addEventListener('click', () => confirmCurrentActiveItem());
+
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.code === 'Space' || e.key === ' ' || e.code === 'Enter') {
+        e.preventDefault();
+        confirmCurrentActiveItem();
+      }
+    });
+
+    btnNextPhase.addEventListener('click', () => {
+      if (currentPhaseIndex < CHECKLIST_DATA.length - 1) {
+        switchPhase(currentPhaseIndex + 1);
+        playTone('click');
+      }
+    });
+
+    btnResetAll.addEventListener('click', () => {
+      CHECKLIST_DATA.forEach(p => checkedState[p.id].clear());
+      saveState();
+      playTone('click');
+      renderActiveChecklist();
+      showToast('Tüm uçuş kontrol listeleri sıfırlandı', 'info');
+    });
+
+    btnAudioToggle.addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      if (soundEnabled) {
+        audioIcon.className = 'fa-solid fa-volume-high text-emerald-500 text-xs';
+        playTone('check');
+        showToast('Kokpit ses ikazları devrede', 'info');
       } else {
-        if (currentPhaseIndex < checklistData.length - 2) {
-          selectPhase(currentPhaseIndex + 1);
-        }
+        audioIcon.className = 'fa-solid fa-volume-xmark text-slate-400 text-xs';
+        showToast('Kokpit ses ikazları kapatıldı', 'info');
+      }
+    });
+
+    function toggleNativeFullscreen() {
+      const doc = document.documentElement;
+      const fsIcon = document.getElementById('fs-icon');
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (doc.requestFullscreen) doc.requestFullscreen().catch(err => console.log('FS error:', err));
+        else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
+        if (fsIcon) fsIcon.className = 'fa-solid fa-compress text-thy-red text-xs';
+        showToast('Tam ekran açıldı', 'info');
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen().catch(err => console.log('Exit FS error:', err));
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        if (fsIcon) fsIcon.className = 'fa-solid fa-expand text-slate-400 text-xs';
       }
     }
 
-    function resetCurrentPhase() {
-      const phase = checklistData[currentPhaseIndex];
-      checkedState[phase.id].fill(false);
-      renderPhase();
-      renderNav();
+    btnToggleFullscreen.addEventListener('click', toggleNativeFullscreen);
+    btnModalForceFullscreen.addEventListener('click', () => {
+      toggleNativeFullscreen();
+      hideInstallModal();
+    });
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtnText = document.getElementById('install-btn-text');
+      if (installBtnText) installBtnText.innerText = 'CİHAZA YÜKLE';
+      showToast('Uygulama cihazınıza kurulmaya hazır!', 'info');
+    });
+
+    function triggerInstallOrGuide() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((res) => {
+          if (res.outcome === 'accepted') showToast('A321 Checklist cihazınıza yükleniyor...', 'success');
+          deferredPrompt = null;
+        });
+      } else {
+        showInstallModal();
+      }
     }
 
-    function triggerGoAround() {
-      playBeep(350, 0.3);
-      const gaIdx = checklistData.findIndex(p => p.id === "go_around");
-      selectPhase(gaIdx);
+    btnInstallStandalone.addEventListener('click', triggerInstallOrGuide);
+    btnNativePwaInstall.addEventListener('click', triggerInstallOrGuide);
+    bannerActionBtn.addEventListener('click', showInstallModal);
+    bannerCloseBtn.addEventListener('click', () => standaloneAlertBanner.classList.add('hidden'));
+
+    function showInstallModal() {
+      installModal.classList.remove('hidden');
+      requestAnimationFrame(() => installModal.classList.remove('opacity-0'));
     }
 
-    function returnToApproach() {
-      const appIdx = checklistData.findIndex(p => p.id === "approach");
-      checkedState["approach"].fill(false);
-      checkedState["landing"].fill(false);
-      selectPhase(appIdx);
+    function hideInstallModal() {
+      installModal.classList.add('opacity-0');
+      setTimeout(() => installModal.classList.add('hidden'), 200);
     }
 
-    function openFailures() {
-      const modal = document.getElementById("failureModal");
-      const list = document.getElementById("failureList");
-      list.innerHTML = failureData.map(f => `
-        <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px;">
-          <h4 style="color: var(--ecam-amber); margin-bottom: 6px;">${f.title}</h4>
-          <ul style="padding-left: 20px; font-size: 0.85rem; line-height: 1.4;">
-            ${f.steps.map(s => `<li>${s}</li>`).join("")}
-          </ul>
-        </div>
-      `).join("");
-      modal.style.display = "block";
+    closeModalBtn.addEventListener('click', hideInstallModal);
+    btnModalDismiss.addEventListener('click', hideInstallModal);
+    installModal.addEventListener('click', (e) => {
+      if (e.target === installModal) hideInstallModal();
+    });
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem('thy_theme_mode');
+      if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        themeToggleIcon.className = 'fa-solid fa-moon text-slate-700 text-xs';
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        themeToggleIcon.className = 'fa-solid fa-sun text-amber-400 text-xs';
+      }
     }
 
-    function closeFailures() {
-      document.getElementById("failureModal").style.display = "none";
+    themeToggleBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        localStorage.setItem('thy_theme_mode', 'light');
+        themeToggleIcon.className = 'fa-solid fa-moon text-slate-700 text-xs';
+        showToast('Gündüz Görüş Modu', 'info');
+      } else {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        localStorage.setItem('thy_theme_mode', 'dark');
+        themeToggleIcon.className = 'fa-solid fa-sun text-amber-400 text-xs';
+        showToast('Gece Kokpit Görüş Modu', 'info');
+      }
+    });
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const icon = type === 'success' ? 'fa-circle-check text-emerald-400' : (type === 'warning' ? 'fa-triangle-exclamation text-amber-400' : 'fa-circle-info text-sky-400');
+
+      toast.className = 'px-4 py-2.5 rounded-xl bg-slate-900/95 dark:bg-slate-800/95 border border-slate-700 text-white font-mono text-xs shadow-2xl flex items-center gap-2.5 transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto';
+      toast.innerHTML = `<i class="fa-solid ${icon}"></i><span>${message}</span>`;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => toast.classList.remove('translate-y-2', 'opacity-0'));
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
     }
 
-    function toggleTheme() {
-      const current = document.documentElement.getAttribute("data-theme");
-      document.documentElement.setAttribute("data-theme", current === "light" ? "dark" : "light");
-    }
-
-    init();
+    window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      initState();
+      renderActiveChecklist();
+      updateStandaloneUI();
+      window.matchMedia('(display-mode: standalone)').addEventListener('change', updateStandaloneUI);
+    });
   </script>
 </body>
 </html>
