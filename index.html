@@ -154,10 +154,6 @@
     }
     .item-row:last-child { border-bottom: none; }
     .item-row:hover { background: rgba(255,255,255,0.03); }
-    .item-row.active-item {
-      outline: 2px solid var(--highlight);
-      background: rgba(31, 111, 235, 0.1);
-    }
     .item-row.checked {
       opacity: 0.55;
     }
@@ -391,20 +387,6 @@
           { item: "Auto Brake", action: "Set (Low / Med / BTV)" },
           { item: "Landing Gear", action: "Down (3 Green)" },
           { item: "Flaps", action: "Conf 3 / Conf Full" }
-        ]
-      },
-      {
-        id: "after_landing",
-        title: "AFTER LANDING",
-        items: [
-          { item: "Flaps", action: "Retracted (0 / Clean)" },
-          { item: "Spoilers", action: "Disarmed" },
-          { item: "Radar & PWS", action: "Off" },
-          { item: "TCAS", action: "Standby / XPDR" },
-          { item: "APU", action: "Start / Run" },
-          { item: "Lights", action: "Set (Strobe Off, Ldg Off, Taxi Set)" },
-          { item: "Brake Fans", action: "As Required" },
-          { item: "ECAM Status / Memo", action: "Checked" }
         ]
       },
       {
