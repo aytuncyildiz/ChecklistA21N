@@ -296,7 +296,7 @@
         <div>
           <div class="flex items-center gap-2 sm:gap-2.5 mb-1 flex-wrap">
             <span id="header-phase-badge" class="px-2 py-0.5 rounded-md bg-thy-red text-white font-mono font-bold text-xs tracking-wider">
-              PHASE 1/11
+              PHASE 1/12
             </span>
             <h2 id="header-phase-title" class="font-display font-extrabold text-lg sm:text-2xl text-slate-900 dark:text-white">
               BEFORE START CHECKLIST
@@ -540,7 +540,7 @@
   </script>
 
   <script>
-    /* MASTER CHECKLIST DATA (Standard + Integrated Go-Around) */
+    /* MASTER CHECKLIST DATA (Standard + Integrated Go-Around + After Landing) */
     const CHECKLIST_DATA = [
       {
         id: 'before_start',
@@ -663,20 +663,19 @@
         ]
       },
       {
-        id: 'go_around',
-        name: 'GO-AROUND',
-        fullName: 'MISSED APPROACH / GO-AROUND CHECKLIST',
-        desc: 'Pas geçme manevrası, tırmanış konfigürasyonu ve 2. yaklaşma hazırlığı.',
-        isSpecial: true,
+        id: 'after_landing',
+        name: 'AFTER LANDING',
+        fullName: 'AFTER LANDING CHECKLIST',
+        desc: 'Pist terk edildikten sonra flap, spoiler, radar ve sistem ayarları.',
         items: [
-          { id: 'ga_1', challenge: 'Thrust Levers', response: 'TOGA (Set TOGA Detent)', type: 'standard', note: 'FMA teyidi: MAN TOGA / SRS / GA TRK' },
-          { id: 'ga_2', challenge: 'Rotation', response: 'Performed (Follow SRS pitch order)', type: 'standard' },
-          { id: 'ga_3', challenge: 'Flaps', response: 'Retract One Step (Conf 3 veya 2)', type: 'standard' },
-          { id: 'ga_4', challenge: 'Landing Gear', response: 'UP (Positive Climb teyidiyle)', type: 'standard' },
-          { id: 'ga_5', challenge: 'NAV / HDG Mode', response: 'Engaged / Managed', type: 'standard', note: 'Yayınlanan pas geçme rotası (Missed App Procedure)' },
-          { id: 'ga_6', challenge: 'Thrust Levers (at Thrust Reduction Alt)', response: 'CL (Climb Detent)', type: 'standard' },
-          { id: 'ga_7', challenge: 'Flaps / Spoilers', response: 'Retracted (0/Clean) / Disarmed', type: 'standard' },
-          { id: 'ga_8', challenge: 'Auto Brake & ECAM Memo', response: 'Disarmed / Checked', type: 'standard' }
+          { id: 'al_1', challenge: 'Flaps', response: 'Retracted (0 / Clean)', type: 'standard' },
+          { id: 'al_2', challenge: 'Spoilers', response: 'Disarmed', type: 'standard' },
+          { id: 'al_3', challenge: 'Radar & PWS', response: 'Off', type: 'standard' },
+          { id: 'al_4', challenge: 'TCAS', response: 'Standby / XPDR', type: 'standard' },
+          { id: 'al_5', challenge: 'APU', response: 'Start / Run', type: 'standard' },
+          { id: 'al_6', challenge: 'Lights', response: 'Set', type: 'standard', note: 'Strobe Off, Ldg Off, Taxi Set' },
+          { id: 'al_7', challenge: 'Brake Fans', response: 'As Required', type: 'standard' },
+          { id: 'al_8', challenge: 'ECAM Status / Memo', response: 'Checked', type: 'standard' }
         ]
       },
       {
@@ -702,6 +701,23 @@
           { id: 'sc_2', challenge: 'Oxygen', response: 'Off', type: 'standard' },
           { id: 'sc_3', challenge: 'APU / Ext Power', response: 'Off', type: 'standard' },
           { id: 'sc_4', challenge: 'Batteries', response: 'Off', type: 'standard' }
+        ]
+      },
+      {
+        id: 'go_around',
+        name: 'GO-AROUND',
+        fullName: 'MISSED APPROACH / GO-AROUND CHECKLIST',
+        desc: 'Pas geçme manevrası, tırmanış konfigürasyonu ve 2. yaklaşma hazırlığı.',
+        isSpecial: true,
+        items: [
+          { id: 'ga_1', challenge: 'Thrust Levers', response: 'TOGA (Set TOGA Detent)', type: 'standard', note: 'FMA teyidi: MAN TOGA / SRS / GA TRK' },
+          { id: 'ga_2', challenge: 'Rotation', response: 'Performed (Follow SRS pitch order)', type: 'standard' },
+          { id: 'ga_3', challenge: 'Flaps', response: 'Retract One Step (Conf 3 veya 2)', type: 'standard' },
+          { id: 'ga_4', challenge: 'Landing Gear', response: 'UP (Positive Climb teyidiyle)', type: 'standard' },
+          { id: 'ga_5', challenge: 'NAV / HDG Mode', response: 'Engaged / Managed', type: 'standard', note: 'Yayınlanan pas geçme rotası (Missed App Procedure)' },
+          { id: 'ga_6', challenge: 'Thrust Levers (at Thrust Reduction Alt)', response: 'CL (Climb Detent)', type: 'standard' },
+          { id: 'ga_7', challenge: 'Flaps / Spoilers', response: 'Retracted (0/Clean) / Disarmed', type: 'standard' },
+          { id: 'ga_8', challenge: 'Auto Brake & ECAM Memo', response: 'Disarmed / Checked', type: 'standard' }
         ]
       }
     ];
@@ -1510,3 +1526,11 @@
   </script>
 </body>
 </html>
+```<FollowUp>
+  <Suggestion>Dosyayı test ettikten sonra herhangi bir sorun gözlemledin mi?</Suggestion>
+  <Suggestion>Maddelerin sıralanışı veya arayüzün mobil kullanımıyla ilgili ek bir düzenleme ister misin?</Suggestion>
+</FollowUp>
+
+<ElicitationsGroup>
+  <Elicitation id="checklist_status" question="After Landing checklist adımı bu kez sorunsuz çalıştı mı?"/>
+</ElicitationsGroup>
